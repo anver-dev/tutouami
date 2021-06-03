@@ -31,7 +31,8 @@ public class Asesoria {
 	private String dia;
 	private String horaInicio;
 	private String horaTermino;
-	private int puntuacion;
+	private float puntuacion;
+	private int totalPuntuaciones;
 	private String detalles;
 	private String tipo;
 	private String ubicacion;
