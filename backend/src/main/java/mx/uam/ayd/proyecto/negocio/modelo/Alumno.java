@@ -36,7 +36,8 @@ public class Alumno {
 	private String telefono;
 	private String cv;
 	private int trimestre;
-	private int puntuacion;
+	private float puntuacion;
+	private int totalPuntuaciones;
 	private String descripcion;
 	private String estado;
 	
