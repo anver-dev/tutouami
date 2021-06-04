@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.CarreraRepository;
 import mx.uam.ayd.proyecto.datos.GrupoRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
+import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Carrera;
 import mx.uam.ayd.proyecto.negocio.modelo.Grupo;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
@@ -35,6 +37,9 @@ public class ProyectoApplication {
 	
 	@Autowired
 	MateriaRepository materiaRepository;
+	
+	@Autowired
+	AlumnoRepository alumnoRepository;
 	
 	/**
 	 * 
@@ -90,6 +95,14 @@ public class ProyectoApplication {
 		materiaRepository.save(materiaCompiladores);
 		materiaRepository.save(materiaIngenieria);
 		materiaRepository.save(materiaSistemas);
+		
+		Alumno alu1 = new Alumno();
+		alu1.setNombre("Gonzalo");
+		alumnoRepository.save(alu1);
+		
+		Alumno alu2 = new Alumno();
+		alu2.setNombre("Victor");
+		alumnoRepository.save(alu2);
 		
 		Grupo grupoAdmin = new Grupo();
 		grupoAdmin.setNombre("Administradores");
