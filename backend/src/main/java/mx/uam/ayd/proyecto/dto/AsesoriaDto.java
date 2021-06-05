@@ -1,13 +1,9 @@
 package mx.uam.ayd.proyecto.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
-import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 
 /**
@@ -16,8 +12,8 @@ import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
  */
 @Data
 public class AsesoriaDto {
-
-private long idAsesoria;
+	
+	private long idAsesoria;
 	
 	@NotEmpty(message = "El campo no debe ser vacio")
 	private String dia;
@@ -39,10 +35,7 @@ private long idAsesoria;
 
 	@NotEmpty(message = "El campo no debe ser vacio")
 	private String ubicacion;
-	
-	private List <Alumno> alumnos = new ArrayList <> ();
-
-	
+		
 	@NotNull
 	private long materia;
 
@@ -70,4 +63,5 @@ private long idAsesoria;
 		
 		return dto;
 	}
+
 }

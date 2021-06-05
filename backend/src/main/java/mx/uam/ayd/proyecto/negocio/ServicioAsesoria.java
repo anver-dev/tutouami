@@ -1,5 +1,7 @@
 package mx.uam.ayd.proyecto.negocio;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
 import mx.uam.ayd.proyecto.dto.AsesoriaDto;
+import mx.uam.ayd.proyecto.dto.MateriaDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
@@ -53,7 +56,6 @@ public class ServicioAsesoria {
 		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
 		asesoria.setCosto(asesoriaDto.getCosto());
 		asesoria.setUbicacion(asesoriaDto.getUbicacion());
-		//asesoria.setAlumno(alumno);
 		asesoria.setMateria(materia);
 
 		asesoria = asesoriaRepository.save(asesoria);
@@ -69,5 +71,16 @@ public class ServicioAsesoria {
 		
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
+	
+	public List<AsesoriaDto> recuperaAsesorias() {
+		List<AsesoriaDto> asesoriasDto = new ArrayList<>();
+
+		for (Asesoria asesoria : asesoriaRepository.findAll()) {
+			asesoriasDto.add(AsesoriaDto.creaAsesoriaDto(asesoria));
+		}
+
+		return asesoriasDto;
+	}
+	
 	
 }

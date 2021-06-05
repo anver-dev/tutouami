@@ -69,6 +69,7 @@ public class AlumnoDto {
 	@NotNull
 	private long inscripcion;
 	
+	
 	private List <Asesoria> asesorias = new ArrayList <> ();
 	
 	private List <Comentario> comentarios = new ArrayList <> ();
