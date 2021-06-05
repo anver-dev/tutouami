@@ -1,5 +1,7 @@
 package mx.uam.ayd.proyecto.negocio;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -13,6 +15,7 @@ import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
 import mx.uam.ayd.proyecto.dto.AlumnoDto;
 import mx.uam.ayd.proyecto.dto.AsesoriaDto;
+import mx.uam.ayd.proyecto.dto.MateriaDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
@@ -71,10 +74,19 @@ public class ServicioAsesoria {
 		
 		alumno.addAsesoria(asesoria);
 		alumnoRepository.save(alumno);
-		
-		
-		
+				
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
+	
+	public List<AsesoriaDto> recuperaAsesorias() {
+		List<AsesoriaDto> asesoriasDto = new ArrayList<>();
+
+		for (Asesoria asesoria : asesoriaRepository.findAll()) {
+			asesoriasDto.add(AsesoriaDto.creaAsesoriaDto(asesoria));
+		}
+
+		return asesoriasDto;
+	}
+
 	
 }

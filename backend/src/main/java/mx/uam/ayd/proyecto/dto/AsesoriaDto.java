@@ -39,6 +39,7 @@ public class AsesoriaDto {
 	@NotNull
 	private long alumno;
 	
+	
 	@NotNull
 	private long materia;
 
