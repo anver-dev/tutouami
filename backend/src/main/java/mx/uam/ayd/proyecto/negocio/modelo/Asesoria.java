@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -42,9 +41,6 @@ public class Asesoria {
 	private float costo;
 	private String url;
 	private String estado;
-	
-	@ManyToOne
-    private Alumno alumno;
 	
 	@ManyToOne
     private Materia materia;

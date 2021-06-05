@@ -63,7 +63,6 @@ public class ServicioAsesoria {
 		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
 		asesoria.setCosto(asesoriaDto.getCosto());
 		asesoria.setUbicacion(asesoriaDto.getUbicacion());
-		asesoria.setAlumno(alumno);
 		asesoria.setMateria(materia);
 
 		asesoria = asesoriaRepository.save(asesoria);
