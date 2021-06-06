@@ -6,9 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import mx.uam.ayd.proyecto.datos.AlumnoRepository;
+import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.CarreraRepository;
 import mx.uam.ayd.proyecto.datos.GrupoRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
+import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
+import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Carrera;
 import mx.uam.ayd.proyecto.negocio.modelo.Grupo;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
@@ -32,6 +36,12 @@ public class ProyectoApplication {
 	
 	@Autowired
 	CarreraRepository carreraRepository;
+	
+	@Autowired
+	AsesoriaRepository asesoriaRepository;
+	
+	@Autowired
+	AlumnoRepository  alumnoRepository;
 	
 	@Autowired
 	MateriaRepository materiaRepository;
@@ -91,6 +101,62 @@ public class ProyectoApplication {
 		materiaRepository.save(materiaIngenieria);
 		materiaRepository.save(materiaSistemas);
 		
+		//Se agrego un alumno de prueba
+		
+		Alumno alumno = new Alumno();
+		alumno.setNombre("Victor");
+		alumno.setApellidoPaterno("Sosa");
+		alumno.setApellidoMaterno("Pina");
+		alumno.setEdad(21);
+		alumno.setCorreo("manuel@gmail.com");
+		alumno.setContrasenia("123");
+		alumno.setTelefono("55555");
+		alumno.setCv("El mejor");
+		alumno.setTrimestre(9);
+		alumno.setPuntuacion(4);
+		alumno.setTotalPuntuaciones(0);
+		alumno.setDescripcion("dos tres");
+		alumno.setEstado("Libre");
+		alumnoRepository.save(alumno);
+		
+		Alumno alumno1 = new Alumno();
+		alumno1.setNombre("Victor");
+		alumno1.setApellidoPaterno("Sosa");
+		alumno1.setApellidoMaterno("Pina");
+		alumno1.setEdad(21);
+		alumno1.setCorreo("manuel@gmail.com");
+		alumno1.setContrasenia("123");
+		alumno1.setTelefono("55555");
+		alumno1.setCv("El mejor");
+		alumno1.setTrimestre(9);
+		alumno1.setPuntuacion(4);
+		alumno1.setTotalPuntuaciones(0);
+		alumno1.setDescripcion("dos tres");
+		alumno1.setEstado("Libre");
+		alumnoRepository.save(alumno1);
+		
+		//Se agrego una asesoria de prueba
+		/*
+		Asesoria asesoria = new Asesoria();
+		asesoria.setDia("04/07/2021");
+		asesoria.setHoraInicio("12");
+		asesoria.setHoraTermino("2");
+		asesoria.setPuntuacion(3);
+		asesoria.setTotalPuntuaciones(4);
+		asesoria.setDetalles("Bueno");
+		asesoria.setTipo("Alumno");
+		asesoria.setUbicacion("AT-309");
+		asesoria.setCosto(20);
+		asesoria.setUrl("www.uam.com");
+		asesoria.setEstado("Libre");
+		asesoriaRepository.save(asesoria);
+		
+		alumno.addAsesoria(asesoria);
+		alumnoRepository.save(alumno);
+		
+		materiaSistemas.addAsesoria(asesoria);
+		materiaRepository.save(materiaSistemas);
+		*/
 		Grupo grupoAdmin = new Grupo();
 		grupoAdmin.setNombre("Administradores");
 		grupoRepository.save(grupoAdmin);
