@@ -30,7 +30,7 @@ public class Materia {
 	private long idMateria;
 	private String nombre;
 	
-	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "idMateria")
 	@JsonIgnore
 

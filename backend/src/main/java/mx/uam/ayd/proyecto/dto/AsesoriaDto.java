@@ -38,6 +38,9 @@ public class AsesoriaDto {
 		
 	@NotNull
 	private long materia;
+	
+	@NotNull
+	private long alumno;
 
 	
 	/**
@@ -59,6 +62,7 @@ public class AsesoriaDto {
 		dto.setHoraTermino(asesoria.getHoraTermino());
 		dto.setCosto(asesoria.getCosto());
 		dto.setUbicacion(asesoria.getUbicacion());
+		dto.setAlumno(asesoria.getIdAlumno());
 		dto.setMateria(asesoria.getMateria().getIdMateria());
 		
 		return dto;
