@@ -42,6 +42,8 @@ public class Asesoria {
 	private String url;
 	private String estado;
 	
+	private long idAlumno;
+	
 	@ManyToOne
     private Materia materia;
 	
@@ -49,8 +51,8 @@ public class Asesoria {
     private Inscripcion inscripcion;
 	
 	@JsonIgnore
-	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "idAlumno")
+	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JoinColumn(name = "idAsesoria")
 	private final List<Comentario> comentarios = new ArrayList<>();
 	
 	

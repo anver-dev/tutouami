@@ -48,12 +48,12 @@ public class Alumno {
 	
 	
 	
-	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
 	private final List<Asesoria> asesorias = new ArrayList<>();
 	
-	@OneToMany(targetEntity = Inscripcion.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Inscripcion.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	private final List<Inscripcion> inscripciones = new ArrayList<>();
 	
