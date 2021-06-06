@@ -26,8 +26,10 @@ public class ServicioAsesoria {
 	
 	@Autowired
 	private MateriaRepository materiaRepository;
+	
 	/**
-	 * En este metodo se recuperan las asesorias
+	 * Recuperar las asesorias de un usuario 
+	 * 
 	 * @param id 
 	 * 
 	 * @return lista de asesorias
@@ -44,7 +46,9 @@ public class ServicioAsesoria {
 	}
 
 	/**
-	 * Metodo para acualizar una asesoria
+	 * 
+	 * Acualizar una asesoria
+	 * 
 	 * @param idAsesoria 
 	 * @param idAlumno
 	 * @param asesoriaDto
@@ -80,9 +84,12 @@ public class ServicioAsesoria {
 		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
 		asesoria.setCosto(asesoriaDto.getCosto());
 		asesoria.setUbicacion(asesoriaDto.getUbicacion());
-		asesoria.setIdAlumno(alumno.getIdAlumno());
+		asesoria.setUrl(asesoriaDto.getUrl());
+		asesoria.setTotalPuntuaciones(asesoriaDto.getTotalPuntuaciones());
+		asesoria.setPuntuacion(asesoriaDto.getPuntuacion());
+		asesoria.setEstado(asesoriaDto.getEstado());
 		asesoria.setMateria(materia);
-		
+		asesoria.setIdAlumno(alumno.getIdAlumno());
 		asesoria = asesoriaRepository.save(asesoria);
 		
 		materia.addAsesoria(asesoria);
@@ -129,6 +136,10 @@ public class ServicioAsesoria {
 		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
 		asesoria.setCosto(asesoriaDto.getCosto());
 		asesoria.setUbicacion(asesoriaDto.getUbicacion());
+		asesoria.setUrl(asesoriaDto.getUrl());
+		asesoria.setTotalPuntuaciones(asesoriaDto.getTotalPuntuaciones());
+		asesoria.setPuntuacion(asesoriaDto.getPuntuacion());
+		asesoria.setEstado(asesoriaDto.getEstado());
 		asesoria.setMateria(materia);
 		asesoria.setIdAlumno(alumno.getIdAlumno());
 		asesoria = asesoriaRepository.save(asesoria);

@@ -2,9 +2,7 @@ package mx.uam.ayd.proyecto.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import lombok.Data;
-import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 
 /**
@@ -13,7 +11,8 @@ import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
  */
 @Data
 public class AsesoriaDto {
-private long idAsesoria;
+	
+	private long idAsesoria;
 	
 	@NotEmpty
 	private String dia;
@@ -31,10 +30,22 @@ private long idAsesoria;
 	private String horaTermino;
 	
 	@NotNull
+	private float puntuacion;
+	
+	@NotNull
+	private int totalPuntuaciones;;
+	
+	@NotEmpty
+	private String url;
+	
+	@NotNull
 	private float costo;
 
 	@NotEmpty
 	private String ubicacion;
+	
+	@NotEmpty
+	private String estado;
 	
 	@NotNull
 	private long materia;
@@ -62,6 +73,10 @@ private long idAsesoria;
 		dto.setHoraTermino(asesoria.getHoraTermino());
 		dto.setCosto(asesoria.getCosto());
 		dto.setUbicacion(asesoria.getUbicacion());
+		dto.setPuntuacion(asesoria.getPuntuacion());
+		dto.setTotalPuntuaciones(asesoria.getTotalPuntuaciones());
+		dto.setUrl(asesoria.getUrl());
+		dto.setEstado(asesoria.getEstado());
 		dto.setMateria(asesoria.getMateria().getIdMateria());
 		dto.setAlumno(asesoria.getIdAlumno());
 		return dto;

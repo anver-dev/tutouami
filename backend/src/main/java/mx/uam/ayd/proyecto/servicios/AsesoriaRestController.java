@@ -33,10 +33,8 @@ public class AsesoriaRestController {
 	@Autowired 
 	private ServicioAsesoria servicioAsesoria;
 
-	
-
 	/**
-	 * Método que permite agregar una asesoria a un alumno
+	 * Método que permite agregar una asesoria de un alumno
 	 * 
 	 * @param nuevoAsesoria
 	 * @return
