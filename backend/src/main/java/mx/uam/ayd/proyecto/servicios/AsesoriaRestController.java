@@ -1,13 +1,96 @@
 package mx.uam.ayd.proyecto.servicios;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.ayd.proyecto.dto.AsesoriaDto;
+import mx.uam.ayd.proyecto.negocio.ServicioAsesoria;
 
 @RestController
 @RequestMapping("/v1") // Versionamiento
 @Slf4j 
 public class AsesoriaRestController {
+	
+	@Autowired 
+	private ServicioAsesoria servicioAsesoria;
+
+
+	/**
+	 * Método que permite agregar una asesoria de un alumno
+	 * 
+	 * @param nuevoAsesoria
+	 * @return
+	 */
+	@ApiOperation(value = "Agrega una asesoria", notes = "Se agrega una asesoria a través del DTO")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Asesoria agregada exitosamente"),
+			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
+			@ApiResponse(code = 500, message = "Error en el servidor")})
+	@PostMapping(path = "/alumnos/{id}/asesoria", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AsesoriaDto> create(@RequestBody @Valid AsesoriaDto nuevaAsesoria,@PathVariable("id")Long id) {
+		try {
+			AsesoriaDto asesoriaDto = servicioAsesoria.agregaAsesoria(nuevaAsesoria,id);
+			return ResponseEntity.status(HttpStatus.CREATED).body(asesoriaDto);
+		} catch (Exception e) {
+			HttpStatus status;
+			
+			if(e instanceof IllegalArgumentException) {
+				status = HttpStatus.BAD_REQUEST;
+			} else {
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+			
+			throw new ResponseStatusException(status, e.getMessage());
+		}
+	}
+	
+	/**
+	 * Metodo para eliminar una asesoria
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@ApiOperation(value = "Eliminar asesoria", notes = "Se elimina una asesoria apartir de su id")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Se elimino la asesoria"),
+			@ApiResponse(code = 404, message = "No encontrada"),
+			@ApiResponse(code = 500, message = "Error en el servidor")})
+	@DeleteMapping(path = "/alumnos/{id}/asesoria/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> delete(
+			@ApiParam(name="idAsesoria",value = "identificador de la asesoria", required = true, example = "0") @RequestParam(name="idAsesoria",required = true) Long idAsesoria){		
+		
+		log.info("Se va eliminar la asesoria con id "+ idAsesoria);
+		
+		try {
+			AsesoriaDto asesoria = servicioAsesoria.retrieve(idAsesoria);
+			if(asesoria != null) {
+				servicioAsesoria.eliminarAsesoria(idAsesoria);
+				return ResponseEntity.status(HttpStatus.OK).body("Se elimino la asesoria");
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		} catch (Exception ex) {
+			log.info("Error: "+ex);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la asesoria");
+		}
+		
+	}
 
 }
