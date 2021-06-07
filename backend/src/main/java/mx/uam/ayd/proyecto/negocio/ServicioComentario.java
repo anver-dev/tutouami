@@ -29,6 +29,9 @@ public class ServicioComentario {
 	@Autowired 
 	private ComentarioRepository comentarioRepository;
 	
+	@Autowired 
+	private ServicioAsesoria servicioAsesoria;
+	
 	///alumno/{id}/asesesoria/{id}/comentario
 	
 	public ComentarioDto agregarComentario(Long idAlumno, Long idAsesoria, ComentarioDto comentarioDto) {
@@ -52,6 +55,8 @@ public class ServicioComentario {
 						
 		Asesoria asesoria = optAsesoria.get();
 		
+		
+		
 		Comentario comentario = new Comentario();
 		
 		comentario.setContenido(comentarioDto.getContenido());
@@ -60,7 +65,6 @@ public class ServicioComentario {
 		comentario.setIdAsesoria(asesoria.getIdAsesoria());
 		comentario.setAlumno(alumno);
 		comentario.setAsesoria(asesoria);
-		
 		
 		comentario = comentarioRepository.save(comentario);
 		
@@ -89,6 +93,8 @@ public class ServicioComentario {
 		Optional <Comentario> optComentario = comentarioRepository.findById(id);
 		return optComentario.isPresent();
 	}
+	
+	
 	
 	public List<ComentarioDto> recuperaComentarios() {
 		List<ComentarioDto> comentariosDto = new ArrayList<>();

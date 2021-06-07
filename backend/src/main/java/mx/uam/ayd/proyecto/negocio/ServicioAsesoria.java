@@ -59,7 +59,7 @@ public class ServicioAsesoria {
 		asesoria.setIdAlumno(alumno.getIdAlumno());
 		
 		for(Asesoria asesorias: asesoriaRepository.findAll()) {
-			if((asesoriaDto.getDia().equals(asesorias.getDia())) || (asesoriaDto.getHoraInicio().equals(asesorias.getHoraInicio())) || (asesoriaDto.getHoraTermino().equals(asesorias.getHoraTermino()))) {
+			if((asesoriaDto.getDia().equals(asesorias.getDia())) & (asesoriaDto.getHoraInicio().equals(asesorias.getHoraInicio())) & (asesoriaDto.getHoraTermino().equals(asesorias.getHoraTermino()))) {
 				throw new IllegalArgumentException("No se puede repetir");
 			} 
 		}
