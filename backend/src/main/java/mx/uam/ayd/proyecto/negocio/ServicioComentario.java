@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.ComentarioRepository;
+import mx.uam.ayd.proyecto.dto.AlumnoDto;
 import mx.uam.ayd.proyecto.dto.AsesoriaDto;
 import mx.uam.ayd.proyecto.dto.ComentarioDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
@@ -59,19 +60,34 @@ public class ServicioComentario {
 		comentario.setIdAsesoria(asesoria.getIdAsesoria());
 		comentario.setAlumno(alumno);
 		comentario.setAsesoria(asesoria);
-	
 		
 		
 		comentario = comentarioRepository.save(comentario);
 		
-		asesoria.addComentario(comentario);
-		asesoriaRepository.save(asesoria);
-		
 		alumno.addComentario(comentario);
 		alumnoRepository.save(alumno);
 		
+		asesoria.addComentario(comentario);
+		asesoriaRepository.save(asesoria);
+		
+		
+		
 		return ComentarioDto.creaComentarioDto(comentario);
 	
+	}
+
+	
+	/**
+	 * Elimina un comentario con un determinado id
+	 * 
+	 * @param id
+	 * @return
+	 */
+
+	public boolean delete(Long id) {
+		comentarioRepository.deleteById(id);
+		Optional <Comentario> optComentario = comentarioRepository.findById(id);
+		return optComentario.isPresent();
 	}
 	
 	public List<ComentarioDto> recuperaComentarios() {

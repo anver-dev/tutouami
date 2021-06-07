@@ -72,6 +72,24 @@ public class ServicioAsesoria {
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
 	
+	/**
+	 * Recuperar las asesorias de un usuario 
+	 * 
+	 * @param id 
+	 * 
+	 * @return lista de asesorias
+	 */
+	public List<AsesoriaDto> recuperaAsesorias(Long id) {
+		
+		List<AsesoriaDto> asesorias = new ArrayList<AsesoriaDto>();
+		for (Asesoria asesoria : asesoriaRepository.findAll()) {
+			if(id == asesoria.getIdAlumno() )
+				asesorias.add(AsesoriaDto.creaAsesoriaDto(asesoria));
+		}
+		
+		return asesorias;
+	}
+	
 	public List<AsesoriaDto> recuperaAsesorias() {
 		List<AsesoriaDto> asesoriasDto = new ArrayList<>();
 

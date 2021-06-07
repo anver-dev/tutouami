@@ -46,8 +46,8 @@ public class ComentarioRestController {
 			@ApiResponse(code = 200, message = "Comentario agregado exitosamente"),
 			@ApiResponse(code = 404, message = "No se encontro al alumno o a la asesoria para agregar el comentario"),
 			@ApiResponse(code = 500, message = "Error al agregar el comentario")})
-	@PostMapping(path = "/alumnos/{id}/asesoria/{id}/comentario", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ComentarioDto> create(@RequestBody @Valid ComentarioDto nuevoComentario,@PathVariable("id")Long idAlumno, @PathVariable("id")Long idAsesoria) {
+	@PostMapping(path = "/alumnos/{idAlumno}/asesoria/{idAsesoria}/comentario", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ComentarioDto> create(@RequestBody @Valid ComentarioDto nuevoComentario,@PathVariable("idAlumno")Long idAlumno, @PathVariable("idAsesoria")Long idAsesoria) {
 		try {
 			ComentarioDto comentarioDto = servicioComentario.agregarComentario(idAlumno, idAsesoria, nuevoComentario);
 			return ResponseEntity.status(HttpStatus.CREATED).body(comentarioDto);

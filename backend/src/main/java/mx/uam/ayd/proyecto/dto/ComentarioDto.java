@@ -40,10 +40,12 @@ public class ComentarioDto {
 	public static ComentarioDto creaComentarioDto(Comentario comentario) {
 		ComentarioDto dto = new ComentarioDto();
 		
+		dto.setIdComentario(comentario.getIdComentario());
 		dto.setContenido(comentario.getContenido());
 		dto.setFechaCreacion(comentario.getFechaCreacion());
 		dto.setAlumno(comentario.getIdAlumno());
 		dto.setAsesoria(comentario.getIdAsesoria());
+		
 		
 		return dto;
 	}
