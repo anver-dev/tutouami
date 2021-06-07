@@ -51,6 +51,7 @@ public class AsesoriaRestController {
 	public ResponseEntity<AsesoriaDto> create(@RequestBody @Valid AsesoriaDto nuevaAsesoria,@PathVariable("id")Long id) {
 		try {
 			AsesoriaDto asesoriaDto = servicioAsesoria.agregaAsesoria(nuevaAsesoria,id);
+			
 			return ResponseEntity.status(HttpStatus.CREATED).body(asesoriaDto);
 		} catch (Exception e) {
 			HttpStatus status;
