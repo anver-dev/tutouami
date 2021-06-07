@@ -57,17 +57,19 @@ public class ServicioAsesoria {
 		asesoria.setUbicacion(asesoriaDto.getUbicacion());
 		asesoria.setMateria(materia);
 		asesoria.setIdAlumno(alumno.getIdAlumno());
-
+		
+		for(Asesoria asesorias: asesoriaRepository.findAll()) {
+			if((asesoriaDto.getDia().equals(asesorias.getDia())) & (asesoriaDto.getHoraInicio().equals(asesorias.getHoraInicio())) & (asesoriaDto.getHoraTermino().equals(asesorias.getHoraTermino()))) {
+				throw new IllegalArgumentException("No se puede repetir");
+			} 
+		}
 		asesoria = asesoriaRepository.save(asesoria);
 		
 		materia.addAsesoria(asesoria);
 		materiaRepository.save(materia);
 		
-		
 		alumno.addAsesoria(asesoria);
 		alumnoRepository.save(alumno);
-		
-		
 		
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
