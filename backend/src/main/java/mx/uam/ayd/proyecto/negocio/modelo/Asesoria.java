@@ -50,6 +50,9 @@ public class Asesoria {
 	@OneToOne
     private Inscripcion inscripcion;
 	
+	@ManyToOne
+    private Comentario comentario;
+	
 	
 	@JsonIgnore
 	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)

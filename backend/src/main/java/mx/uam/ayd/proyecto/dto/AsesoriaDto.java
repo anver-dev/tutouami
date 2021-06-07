@@ -1,10 +1,14 @@
 package mx.uam.ayd.proyecto.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
+import mx.uam.ayd.proyecto.negocio.modelo.Comentario;
 
 /**
  * DTO de asesorias
@@ -43,6 +47,9 @@ public class AsesoriaDto {
 	private long alumno;
 
 	
+	private List <Comentario> comentarios = new ArrayList <> ();
+	
+	
 	/**
 	 * Este método permite generar un DTO a partir de la entidad
 	 * nota: es un método de clase y no se necesita un objeto
@@ -64,6 +71,7 @@ public class AsesoriaDto {
 		dto.setUbicacion(asesoria.getUbicacion());
 		dto.setAlumno(asesoria.getIdAlumno());
 		dto.setMateria(asesoria.getMateria().getIdMateria());
+		dto.setComentarios(asesoria.getComentarios());
 		
 		return dto;
 	}

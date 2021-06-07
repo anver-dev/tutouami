@@ -38,7 +38,6 @@ public class ServicioAsesoria {
 		}
 		
 		Alumno alumno = optAlumno.get();
-		
 		Optional<Materia> optMateria = materiaRepository.findById(asesoriaDto.getMateria());
 		
 		if(optMateria.isEmpty()) {
