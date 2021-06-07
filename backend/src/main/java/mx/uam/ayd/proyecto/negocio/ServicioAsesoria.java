@@ -109,7 +109,16 @@ public class ServicioAsesoria {
 	 * @return
 	 */
 	public AsesoriaDto agregaAsesoria(AsesoriaDto asesoriaDto, Long id) {
-
+		
+		 /*
+		for (Asesoria asesoria : asesoriaRepository.findAll()) {
+			if( (asesoriaDto.getDia() == asesoria.getDia()) && (asesoriaDto.getHoraInicio() == asesoria.getHoraInicio()) && (id == asesoria.getIdAlumno()) ) {
+				
+				throw new IllegalArgumentException("La asesoria ya existe");
+			}	
+		}
+		*/
+		
 		// Vemos si esta en la BD el alumno
 		Optional<Alumno> optAlumno = alumnoRepository.findById(id);
 		
@@ -151,5 +160,24 @@ public class ServicioAsesoria {
 		alumnoRepository.save(alumno);
 		
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
+	}
+
+	/**
+	 * 
+	 * Se recuperan las asesorias que se imparten de una materia 
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<AsesoriaDto> recuperaAsesoriasMateria(Long id) {
+		
+		List<AsesoriaDto> asesorias = new ArrayList<AsesoriaDto>();
+		for (Asesoria asesoria : asesoriaRepository.findAll()) {
+			if(id == asesoria.getMateria().getIdMateria())
+				asesorias.add(AsesoriaDto.creaAsesoriaDto(asesoria));
+		}
+		
+		
+		return asesorias;
 	}
 }

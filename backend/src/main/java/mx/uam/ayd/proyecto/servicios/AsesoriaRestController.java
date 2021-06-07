@@ -100,6 +100,30 @@ public class AsesoriaRestController {
 			throw new ResponseStatusException(status, ex.getMessage());
 		}		
 	}
+	
+
+
+	/**
+     * Recupera las asesorias con una mataria en particular
+     * 
+     * @return
+     */
+	@ApiOperation(value = "Se buscan asesorias que esten relacionas a una materia", notes = "Se buscan las asesorias que concidan con la materia buscada")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Asesorias de la materia"),
+			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
+			@ApiResponse(code = 500, message = "Error en el servidor")})
+	@GetMapping(path = "/alumnos/{id}/asesoria/materia/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AsesoriaDto>> retrieve(
+    		@ApiParam(name="idMateria",value = "identificador de la materia", required = true, example = "0") @RequestParam(name="idMateria",required = true) Long idMateria) {
+        
+    		log.info("Se van a obtener las asesorias de la materia con id "+ idMateria);
+    	
+    		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesoriasMateria(idMateria);
+	        return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);  
+
+    }
+	
 	/**
 	 * Permite recuperar todas las asesorias de un unico alumno
 	 * 
@@ -114,9 +138,13 @@ public class AsesoriaRestController {
 	public ResponseEntity <List<AsesoriaDto>> retrieveAll(
 			@ApiParam(name="id",value = "identificador del alumno", required = true, example = "0") @RequestParam(name="id",required = true) Long id) {
 		
+		log.info("Se van a obtener las asesorias del alumno con id "+ id);
+		
 		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesorias(id);	
 		return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);
+		
 	}
 	
 	
+
 }
