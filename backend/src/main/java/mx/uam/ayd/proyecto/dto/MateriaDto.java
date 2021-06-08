@@ -15,6 +15,8 @@ import mx.uam.ayd.proyecto.negocio.modelo.Materia;
 public class MateriaDto {
 	private long idMateria;
 	private String nombre;
+	
+	
 	private List <Asesoria> asesorias = new ArrayList <> ();
 	
 	 public static MateriaDto creaDto(Materia materia) {
