@@ -113,10 +113,8 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 201, message = "Asesorias de la materia"),
 			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
 			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@GetMapping(path = "/alumnos/{id}/asesoria/materia/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AsesoriaDto>> retrieve(
-    		@ApiParam(name="idMateria",value = "identificador de la materia", required = true, example = "0") @RequestParam(name="idMateria",required = true) Long idMateria) {
-        
+	@GetMapping(path = "/alumnos/{idAlumno}/asesoria/materia/{idMateria}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AsesoriaDto>> retrieve( @PathVariable("idAlumno")Long idAlumno, @PathVariable("idMateria") Long idMateria ){     
     		log.info("Se van a obtener las asesorias de la materia con id "+ idMateria);
     	
     		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesoriasMateria(idMateria);
@@ -134,13 +132,12 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 200, message = "Se encontraron las asesorias"),
 			@ApiResponse(code = 404, message = "No se encontrada"),
 			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@GetMapping(path = "/alumnos/{id}/asesoria", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity <List<AsesoriaDto>> retrieveAll(
-			@ApiParam(name="id",value = "identificador del alumno", required = true, example = "0") @RequestParam(name="id",required = true) Long id) {
+	@GetMapping(path = "/alumnos/{idAlumno}/asesoria", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity <List<AsesoriaDto>> retrieveAll(@PathVariable("idAlumno") Long idAlumno) {
 		
-		log.info("Se van a obtener las asesorias del alumno con id "+ id);
+		log.info("Se van a obtener las asesorias del alumno con id "+ idAlumno);
 		
-		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesorias(id);	
+		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesorias(idAlumno);	
 		return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);
 		
 	}
