@@ -37,6 +37,18 @@ public class AsesoriaDto {
 	private String ubicacion;
 	
 	@NotNull
+	private float puntuacion;
+
+	@NotNull
+	private int totalPuntuaciones;;
+
+	@NotEmpty
+	private String url;
+	
+	@NotEmpty
+	private String estado;
+	
+	@NotNull
 	private long materia;
 	
 	@NotNull

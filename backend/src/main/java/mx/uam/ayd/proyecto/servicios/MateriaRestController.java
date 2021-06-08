@@ -18,6 +18,7 @@ import mx.uam.ayd.proyecto.negocio.ServicioMateria;
 @RequestMapping("/v1") // Versionamiento
 @Slf4j 
 public class MateriaRestController {
+	
 	@Autowired
     private ServicioMateria servicioMateria;
 	
@@ -35,4 +36,5 @@ public class MateriaRestController {
         return ResponseEntity.status(HttpStatus.OK).body(materias);
         
     }
+    
 }

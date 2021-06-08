@@ -44,8 +44,6 @@ public class Asesoria {
 	private long idAlumno;
 	
 	
-	private long idAlumno;
-	
 	@ManyToOne
     private Materia materia;
 	

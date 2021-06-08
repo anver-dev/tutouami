@@ -51,8 +51,6 @@ public class ProyectoApplication {
 	@Autowired
 	MateriaRepository materiaRepository;
 	
-	@Autowired
-	AlumnoRepository alumnoRepository;
 	
 	/**
 	 * 
@@ -95,6 +93,10 @@ public class ProyectoApplication {
 		carreraComputacion.setNombre("Computación");
 		carreraRepository.save(carreraComputacion);
 		
+		Carrera carreraElectronica = new Carrera();
+		carreraElectronica.setNombre("Electronica");
+		carreraRepository.save(carreraElectronica);
+		
 		//Vamos a crear tres materias
 		Materia materiaCompiladores = new Materia();
 		materiaCompiladores.setNombre("Compiladores");
@@ -125,6 +127,7 @@ public class ProyectoApplication {
 		alumno.setTotalPuntuaciones(0);
 		alumno.setDescripcion("dos tres");
 		alumno.setEstado("Libre");
+		alumno.setCarrera(carreraElectronica);
 		alumnoRepository.save(alumno);
 		
 		Alumno alumno1 = new Alumno();
@@ -141,6 +144,7 @@ public class ProyectoApplication {
 		alumno1.setTotalPuntuaciones(0);
 		alumno1.setDescripcion("dos tres");
 		alumno1.setEstado("Libre");
+		alumno1.setCarrera(carreraComputacion);
 		alumnoRepository.save(alumno1);
 		
 		//Se agrego una asesoria de prueba
