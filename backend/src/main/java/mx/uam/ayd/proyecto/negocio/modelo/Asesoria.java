@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 /**
@@ -40,15 +42,19 @@ public class Asesoria {
 	private String url;
 	private String estado;
 	
+	private long idAlumno;
+	
 	@ManyToOne
-    private Alumno alumno;
+    private Materia materia;
 	
 	@OneToOne
     private Inscripcion inscripcion;
 	
-	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "idAlumno")
+	@JsonIgnore
+	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JoinColumn(name = "idAsesoria")
 	private final List<Comentario> comentarios = new ArrayList<>();
+	
 	
 	/**
 	 * 
