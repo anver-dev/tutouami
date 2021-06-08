@@ -26,8 +26,9 @@ import lombok.Data;
 @Data
 public class Asesoria {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long idAsesoria;
+	
 	private String dia;
 	private String horaInicio;
 	private String horaTermino;

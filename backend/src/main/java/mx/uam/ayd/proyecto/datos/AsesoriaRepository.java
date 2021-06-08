@@ -7,3 +7,4 @@ import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 public interface AsesoriaRepository extends CrudRepository<Asesoria, Long> {
 
 }
+ 

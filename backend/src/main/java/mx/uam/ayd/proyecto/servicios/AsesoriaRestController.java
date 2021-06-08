@@ -45,6 +45,7 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor")})
 	@PostMapping(path = "/alumnos/{id}/asesoria", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AsesoriaDto> create(@RequestBody @Valid AsesoriaDto nuevaAsesoria,@PathVariable("id")Long id) {
+		
 		try {
 			AsesoriaDto asesoriaDto = servicioAsesoria.agregaAsesoria(nuevaAsesoria,id);
 			return ResponseEntity.status(HttpStatus.CREATED).body(asesoriaDto);
@@ -72,20 +73,15 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 200, message = "Se elimino la asesoria"),
 			@ApiResponse(code = 404, message = "No encontrada"),
 			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@DeleteMapping(path = "/alumnos/{id}/asesoria/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> delete(
-			@ApiParam(name="idAsesoria",value = "identificador de la asesoria", required = true, example = "0") @RequestParam(name="idAsesoria",required = true) Long idAsesoria){		
+	@DeleteMapping(path = "/alumnos/{idAlumno}/asesoria/{idAsesoria}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> delete( 
+			@PathVariable("idAlumno") Long idAlumno,@PathVariable("idAsesoria") Long idAsesoria){		
 		
 		log.info("Se va eliminar la asesoria con id "+ idAsesoria);
 		
 		try {
-			AsesoriaDto asesoria = servicioAsesoria.retrieve(idAsesoria);
-			if(asesoria != null) {
-				servicioAsesoria.eliminarAsesoria(idAsesoria);
-				return ResponseEntity.status(HttpStatus.OK).body("Se elimino la asesoria");
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			}
+			servicioAsesoria.eliminarAsesoria(idAlumno,idAsesoria);
+			return ResponseEntity.status(HttpStatus.OK).body("Se elimino la asesoria");
 		} catch (Exception ex) {
 			log.info("Error: "+ex);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la asesoria");
