@@ -131,6 +131,7 @@ public class ServicioComentario {
 								
 		Asesoria asesoria = optAsesoria.get();
 		
+		// No se puede borrar un comentario de otro alumno
 		for(Alumno alumno1: alumnoRepository.findAll()) {
 			if(idAlumno.equals(asesoria.getIdAlumno())) {
 				throw new IllegalArgumentException("No puedes eliminar un comentario de otro alumno");
