@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.ComentarioRepository;
@@ -18,6 +19,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Comentario;
 
 @Service
+@Slf4j
 public class ServicioComentario {
 	
 	@Autowired 
@@ -65,10 +67,17 @@ public class ServicioComentario {
 		comentario.setIdAsesoria(asesoria.getIdAsesoria());
 		comentario.setAlumno(alumno);
 		comentario.setAsesoria(asesoria);
-	
+		
+		
+		// Regla de negocio un usuario no puede comentarse a si mismo 
+		for(Alumno alumno1: alumnoRepository.findAll()) {
+			if(idAlumno.equals(asesoria.getIdAlumno())) {
+				throw new IllegalArgumentException("No puedes comentarde a ti mismo ");
+			}
+		}
 		
 		comentario = comentarioRepository.save(comentario);
-		
+	
 		alumno.addComentario(comentario);
 		alumnoRepository.save(alumno);
 		
@@ -80,6 +89,19 @@ public class ServicioComentario {
 		return ComentarioDto.creaComentarioDto(comentario);
 	
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @return alumno con el id
+	 */
+	public ComentarioDto retrieve(Long id){
+		Optional<Comentario> optComentario = comentarioRepository.findById(id);
+		log.info("Recuperando comentario con id: "+ id);
+		Comentario comentario = optComentario.get();
+		return ComentarioDto.creaComentarioDto(comentario);
+		
+	}
 
 	
 	/**
@@ -89,9 +111,39 @@ public class ServicioComentario {
 	 * @return
 	 */
 
-	public boolean delete(Long id) {
+	public boolean delete(Long id, Long idAlumno, Long idAsesoria) {
+		// Vemos si esta en la BD el alumno
+		Optional<Alumno> optAlumno = alumnoRepository.findById(idAlumno);
+
+		if(optAlumno.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró el alumno");
+		}
+						
+		Alumno alumno = optAlumno.get();
+				
+				
+		// Vemos si esta en la BD la asesoria
+		Optional<Asesoria> optAsesoria = asesoriaRepository.findById(idAsesoria);
+
+		if(optAsesoria.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró la asesoria ");
+		}
+								
+		Asesoria asesoria = optAsesoria.get();
+		
+		for(Alumno alumno1: alumnoRepository.findAll()) {
+			if(idAlumno.equals(asesoria.getIdAlumno())) {
+				throw new IllegalArgumentException("No puedes eliminar un comentario de otro alumno");
+			}
+		}
+	
 		comentarioRepository.deleteById(id);
+		
+		
 		Optional <Comentario> optComentario = comentarioRepository.findById(id);
+
+		
+		
 		return optComentario.isPresent();
 	}
 	

@@ -59,7 +59,7 @@ public class Alumno {
 	@JsonIgnore
 	private final List<Inscripcion> inscripciones = new ArrayList<>();
 	
-	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
 	private final List<Comentario> comentarios = new ArrayList<>();
