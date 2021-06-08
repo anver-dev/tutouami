@@ -51,8 +51,6 @@ public class ProyectoApplication {
 	@Autowired
 	MateriaRepository materiaRepository;
 	
-	@Autowired
-	AlumnoRepository alumnoRepository;
 	
 	/**
 	 * 

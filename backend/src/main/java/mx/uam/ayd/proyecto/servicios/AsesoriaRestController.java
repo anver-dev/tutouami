@@ -78,7 +78,7 @@ public class AsesoriaRestController {
      * Permite recuperar todas las materias
      * 
      * @return
-     */
+     *
     @GetMapping(path = "/asesorias", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <List<AsesoriaDto>> retrieveAll() {
         
@@ -88,39 +88,9 @@ public class AsesoriaRestController {
         return ResponseEntity.status(HttpStatus.OK).body(asesorias);
         
     }
+    */
 
-	@Autowired 
-	private ServicioAsesoria servicioAsesoria;
 
-	/**
-	 * Método que permite agregar una asesoria de un alumno
-	 * 
-	 * @param nuevoAsesoria
-	 * @return
-	 */
-	@ApiOperation(value = "Agrega una asesoria", notes = "Se agrega una asesoria a través del DTO")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Asesoria agregada exitosamente"),
-			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
-			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@PostMapping(path = "/alumnos/{id}/asesoria", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AsesoriaDto> create(@RequestBody @Valid AsesoriaDto nuevaAsesoria,@PathVariable("id")Long id) {
-		try {
-			AsesoriaDto asesoriaDto = servicioAsesoria.agregaAsesoria(nuevaAsesoria,id);
-			return ResponseEntity.status(HttpStatus.CREATED).body(asesoriaDto);
-		} catch (Exception e) {
-			HttpStatus status;
-			
-			if(e instanceof IllegalArgumentException) {
-				status = HttpStatus.BAD_REQUEST;
-			} else {
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-			}
-			
-			throw new ResponseStatusException(status, e.getMessage());
-		}
-	}
-	
 	/**
 	 * Metodo para actualizar una asesoria
 	 * 
