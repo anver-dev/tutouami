@@ -12,6 +12,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Carrera;
 
 @Service
+@Slf4j
 public class ServicioAlumno {
 	@Autowired
 	private AlumnoRepository alumnoRepository;

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +21,10 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import mx.uam.ayd.proyecto.dto.AlumnoDto;
+
+import mx.uam.ayd.proyecto.dto.AsesoriaDto;
 import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
+import mx.uam.ayd.proyecto.negocio.ServicioAsesoria;
 
 @RestController
 @RequestMapping("/v1") // Versionamiento
@@ -65,5 +68,5 @@ public class AlumnoRestController {
 			throw new ResponseStatusException(status, ex.getMessage());
 		}		
 	}
-	
+
 }
