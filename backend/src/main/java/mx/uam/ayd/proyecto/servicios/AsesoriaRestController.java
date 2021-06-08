@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -74,14 +75,14 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 200, message = "Asesoria Actualizada exitosamente"),
 			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
 			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@PutMapping(path = "/alumnos/{id}/asesoria/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(path = "/alumnos/{idAlumno}/asesoria/{idAsesoria}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AsesoriaDto> update(
 			@ApiParam(name="idAsesoria",value = "identificador de la asesoria", required = true, example = "0") @RequestParam(name="idAsesoria",required = true) Long idAsesoria,
 	        @ApiParam(name="idAlumno",value = "identificador del alumno", required = true, example = "0") @RequestParam(name="idAlumno",required = true) Long idAlumno,			
 			@RequestBody  @Valid AsesoriaDto asesoriaDto ) {
 		
 		//Traza
-		log.info("Actualizando la asesoria con id "+ idAsesoria +"Del alumno: "+idAlumno );
+		log.info("Actualizando la asesoria con id "+ idAsesoria +" Del alumno: "+idAlumno );
 		
 		try{
 			//Se manda a llamar al servicio
@@ -110,11 +111,11 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 200, message = "Se encontraron las asesorias"),
 			@ApiResponse(code = 404, message = "No se encontrada"),
 			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@GetMapping(path = "/alumnos/{id}/asesoria", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/alumnos/{idAlumno}/asesoria", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity <List<AsesoriaDto>> retrieveAll(
-			@ApiParam(name="id",value = "identificador del alumno", required = true, example = "0") @RequestParam(name="id",required = true) Long id) {
+			@ApiParam(name="idAlumno",value = "identificador del alumno", required = true, example = "0") @RequestParam(name="idAlumno",required = true) Long idAlumno) {
 		
-		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesorias(id);	
+		List <AsesoriaDto> asesoriasDto =  servicioAsesoria.recuperaAsesorias(idAlumno);	
 		return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);
 	}
 	

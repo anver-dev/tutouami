@@ -27,6 +27,53 @@ public class ServicioAsesoria {
 	@Autowired
 	private MateriaRepository materiaRepository;
 	
+	
+	public AsesoriaDto agregaAsesoria(AsesoriaDto asesoriaDto, Long id) {
+
+		// Vemos si esta en la BD el alumno
+		Optional<Alumno> optAlumno = alumnoRepository.findById(id);
+		
+		if(optAlumno.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró el alumno");
+		}
+		
+		Alumno alumno = optAlumno.get();
+		Optional<Materia> optMateria = materiaRepository.findById(asesoriaDto.getMateria());
+		
+		if(optMateria.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró la materia");
+		}
+		
+		Materia materia = optMateria.get();
+		
+		Asesoria asesoria = new Asesoria();
+
+		asesoria.setDia(asesoriaDto.getDia());
+		asesoria.setTipo(asesoriaDto.getTipo());
+		asesoria.setDetalles(asesoriaDto.getDetalles());
+		asesoria.setHoraInicio(asesoriaDto.getHoraInicio());
+		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
+		asesoria.setCosto(asesoriaDto.getCosto());
+		asesoria.setUbicacion(asesoriaDto.getUbicacion());
+		asesoria.setMateria(materia);
+		asesoria.setIdAlumno(alumno.getIdAlumno());
+		
+		for(Asesoria asesorias: asesoriaRepository.findAll()) {
+			if((id == asesorias.getIdAlumno()) & (asesoriaDto.getDia().equals(asesorias.getDia())) & (asesoriaDto.getHoraInicio().equals(asesorias.getHoraInicio())) & (asesoriaDto.getHoraTermino().equals(asesorias.getHoraTermino()))) {
+				throw new IllegalArgumentException("No se puede repetir");
+			} 
+		}
+
+		asesoria = asesoriaRepository.save(asesoria);
+	
+		materia.addAsesoria(asesoria);
+		materiaRepository.save(materia);
+		
+		alumno.addAsesoria(asesoria);
+		alumnoRepository.save(alumno);
+	
+		return AsesoriaDto.creaAsesoriaDto(asesoria);
+	}
 	/**
 	 * Recuperar las asesorias de un usuario 
 	 * 
@@ -100,56 +147,5 @@ public class ServicioAsesoria {
 		
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
-	
-	/**
-	 * Agregar una nueva asesoria
-	 * 
-	 * @param asesoriaDto
-	 * @param id
-	 * @return
-	 */
-	public AsesoriaDto agregaAsesoria(AsesoriaDto asesoriaDto, Long id) {
 
-		// Vemos si esta en la BD el alumno
-		Optional<Alumno> optAlumno = alumnoRepository.findById(id);
-		
-		if(optAlumno.isEmpty()) {
-			throw new IllegalArgumentException("No se encontró el alumno");
-		}
-		
-		Alumno alumno = optAlumno.get();
-		
-		Optional<Materia> optMateria = materiaRepository.findById(asesoriaDto.getMateria());
-		
-		if(optMateria.isEmpty()) {
-			throw new IllegalArgumentException("No se encontró la materia");
-		}
-		
-		Materia materia = optMateria.get();
-		
-		Asesoria asesoria = new Asesoria();
-
-		asesoria.setDia(asesoriaDto.getDia());
-		asesoria.setTipo(asesoriaDto.getTipo());
-		asesoria.setDetalles(asesoriaDto.getDetalles());
-		asesoria.setHoraInicio(asesoriaDto.getHoraInicio());
-		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
-		asesoria.setCosto(asesoriaDto.getCosto());
-		asesoria.setUbicacion(asesoriaDto.getUbicacion());
-		asesoria.setUrl(asesoriaDto.getUrl());
-		asesoria.setTotalPuntuaciones(asesoriaDto.getTotalPuntuaciones());
-		asesoria.setPuntuacion(asesoriaDto.getPuntuacion());
-		asesoria.setEstado(asesoriaDto.getEstado());
-		asesoria.setMateria(materia);
-		asesoria.setIdAlumno(alumno.getIdAlumno());
-		asesoria = asesoriaRepository.save(asesoria);
-		
-		materia.addAsesoria(asesoria);
-		materiaRepository.save(materia);
-		
-		alumno.addAsesoria(asesoria);
-		alumnoRepository.save(alumno);
-		
-		return AsesoriaDto.creaAsesoriaDto(asesoria);
-	}
 }
