@@ -2,7 +2,6 @@ package mx.uam.ayd.proyecto.negocio.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +29,7 @@ public class Asesoria {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idAsesoria;
+	
 	private String dia;
 	private String horaInicio;
 	private String horaTermino;
@@ -41,6 +41,8 @@ public class Asesoria {
 	private float costo;
 	private String url;
 	private String estado;
+	private long idAlumno;
+	
 	
 	private long idAlumno;
 	
@@ -50,6 +52,7 @@ public class Asesoria {
 	@OneToOne
     private Inscripcion inscripcion;
 	
+
 	@JsonIgnore
 	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAsesoria")

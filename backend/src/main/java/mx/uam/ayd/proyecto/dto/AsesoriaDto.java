@@ -42,7 +42,6 @@ public class AsesoriaDto {
 	@NotNull
 	private long alumno;
 
-	
 	/**
 	 * Este método permite generar un DTO a partir de la entidad
 	 * nota: es un método de clase y no se necesita un objeto
@@ -62,6 +61,12 @@ public class AsesoriaDto {
 		dto.setHoraTermino(asesoria.getHoraTermino());
 		dto.setCosto(asesoria.getCosto());
 		dto.setUbicacion(asesoria.getUbicacion());
+		dto.setPuntuacion(asesoria.getPuntuacion());
+		dto.setTotalPuntuaciones(asesoria.getTotalPuntuaciones());
+		dto.setUrl(asesoria.getUrl());
+		dto.setEstado(asesoria.getEstado());
+		dto.setMateria(asesoria.getMateria().getIdMateria());
+		dto.setAlumno(asesoria.getIdAlumno());
 		dto.setMateria(asesoria.getMateria().getIdMateria());
 		dto.setAlumno(asesoria.getIdAlumno());
 		
