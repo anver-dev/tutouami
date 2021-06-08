@@ -44,10 +44,8 @@ public class Alumno {
 	private String estado;
 	
 	@ManyToOne
-    private Carrera carrera;
-	
-	
-	
+  private Carrera carrera;
+
 	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
