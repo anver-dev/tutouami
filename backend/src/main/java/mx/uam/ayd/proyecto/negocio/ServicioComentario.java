@@ -65,6 +65,7 @@ public class ServicioComentario {
 		comentario.setIdAsesoria(asesoria.getIdAsesoria());
 		comentario.setAlumno(alumno);
 		comentario.setAsesoria(asesoria);
+	
 		
 		comentario = comentarioRepository.save(comentario);
 		
@@ -83,7 +84,7 @@ public class ServicioComentario {
 	
 	/**
 	 * Elimina un comentario con un determinado id
-	 * 
+	 * En una asesoria en particular
 	 * @param id
 	 * @return
 	 */
