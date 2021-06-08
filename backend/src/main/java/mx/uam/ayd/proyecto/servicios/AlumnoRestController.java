@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,11 +42,8 @@ public class AlumnoRestController {
 			@ApiResponse(code = 200, message = "Alumno actualizado exitosamente"),
 			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
 			@ApiResponse(code = 500, message = "Error en el servidor")})
-	@PutMapping(path = "/alumnos/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AlumnoDto> update(
-			
-	        @ApiParam(name="idAlumno",value = "identificador del alumno", required = true, example = "0") @RequestParam(name="idAlumno",required = true) Long idAlumno,			
-			@RequestBody  @Valid AlumnoDto alumnoDto ) {
+	@PatchMapping(path = "/alumnos/{idAlumno}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AlumnoDto> update(@PathVariable("idAlumno") Long idAlumno, @RequestBody  @Valid AlumnoDto alumnoDto ) {
 		
 		//Comienza HU-10
 		log.info("Actualizando el alumno con id: "+idAlumno );
