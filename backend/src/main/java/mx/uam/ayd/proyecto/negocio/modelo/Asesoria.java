@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 /**
@@ -41,15 +44,20 @@ public class Asesoria {
 	private long idAlumno;
 	
 	
+	private long idAlumno;
+	
 	@ManyToOne
     private Materia materia;
 	
 	@OneToOne
     private Inscripcion inscripcion;
 	
+
+	@JsonIgnore
 	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAsesoria")
 	private final List<Comentario> comentarios = new ArrayList<>();
+	
 	
 	/**
 	 * 

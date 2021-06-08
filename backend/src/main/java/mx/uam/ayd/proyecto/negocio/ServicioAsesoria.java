@@ -4,30 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
+import mx.uam.ayd.proyecto.dto.AlumnoDto;
 import mx.uam.ayd.proyecto.dto.AsesoriaDto;
+import mx.uam.ayd.proyecto.dto.MateriaDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
 
 @Service
+@Slf4j
 public class ServicioAsesoria {
 	
 	@Autowired 
 	private AsesoriaRepository asesoriaRepository;
 	
-	@Autowired
+	@Autowired 
 	private AlumnoRepository alumnoRepository;
 	
-	@Autowired
+	@Autowired 
 	private MateriaRepository materiaRepository;
-	
-	
+
 	public AsesoriaDto agregaAsesoria(AsesoriaDto asesoriaDto, Long id) {
 
 		// Vemos si esta en la BD el alumno
@@ -38,7 +43,8 @@ public class ServicioAsesoria {
 		}
 		
 		Alumno alumno = optAlumno.get();
-		Optional<Materia> optMateria = materiaRepository.findById(asesoriaDto.getMateria());
+
+    Optional<Materia> optMateria = materiaRepository.findById(asesoriaDto.getMateria());
 		
 		if(optMateria.isEmpty()) {
 			throw new IllegalArgumentException("No se encontró la materia");
@@ -148,4 +154,5 @@ public class ServicioAsesoria {
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
 
+	
 }

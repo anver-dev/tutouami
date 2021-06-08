@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 /**
@@ -42,10 +44,11 @@ public class Alumno {
 	private String estado;
 	
 	@ManyToOne
-    private Carrera carrera;
+  private Carrera carrera;
 
 	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
+	@JsonIgnore
 	private final List<Asesoria> asesorias = new ArrayList<>();
 	
 	@OneToMany(targetEntity = Inscripcion.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -69,7 +72,7 @@ public class Alumno {
 	public boolean addAsesoria(Asesoria asesoria) {
 
 		if (asesoria == null) {
-			throw new IllegalArgumentException("El usuario no puede ser null");
+			throw new IllegalArgumentException("La asesoria no puede ser null");
 		}
 
 		if (asesorias.contains(asesoria)) {
@@ -91,7 +94,7 @@ public class Alumno {
 	public boolean addInscripcion(Inscripcion inscripcion) {
 
 		if (inscripcion == null) {
-			throw new IllegalArgumentException("El usuario no puede ser null");
+			throw new IllegalArgumentException("La inscripcion no puede ser null");
 		}
 
 		if (inscripciones.contains(inscripcion)) {
