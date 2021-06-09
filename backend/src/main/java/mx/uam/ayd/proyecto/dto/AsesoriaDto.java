@@ -12,7 +12,7 @@ import mx.uam.ayd.proyecto.negocio.modelo.Comentario;
 
 /**
  * DTO de asesorias
- * 
+ *  creacion de la rama
  */
 @Data
 public class AsesoriaDto {
