@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -112,6 +113,51 @@ public class ComentarioRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el comentario");
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * Comienza HU-15 Como alumno quiero poder seleccionar un comentario para editar el contenido
+	 * 
+	 * Metodo para actualizar un comentario 
+	 * 
+	 * @param id
+	 * @param usuario
+	 * @return
+	 */
+	@ApiOperation(value = "Actualiza un comentario", notes = "Se actualiza la comentario de una asesoria")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Comentario de la asesoria actualizado exitosamente"),
+			@ApiResponse(code = 404, message = "No se encontro "),
+			@ApiResponse(code = 500, message = "Error en el servidor")})
+	@PutMapping(path = "/alumnos/{idAlumno}/asesoria/{idAsesoria}/comentario/{idComentario}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ComentarioDto> update( 
+												@PathVariable("idAlumno") @Valid Long idAlumno, 
+												@PathVariable("idAsesoria") @Valid Long idAsesoria,
+												@PathVariable("idComentario") @Valid Long idComentario,
+												@RequestBody  @Valid ComentarioDto comentarioDto ) {
+		
+		//Traza
+		log.info("Actualizando el comentario con id "+ idComentario );
+		log.info( "Del alumno: "+ idAlumno);
+		log.info( "De la asesoria: "+ idAsesoria);
+		
+		try{
+			//Se manda a llamar al servicio
+			ComentarioDto comentario = servicioComentario.actualizar(idAlumno,idComentario,idAsesoria,comentarioDto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(comentario);
+		} catch(Exception ex) {
+			
+			HttpStatus status;
+			
+			if(ex instanceof IllegalArgumentException) {
+				status = HttpStatus.BAD_REQUEST;
+			} else {
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+			
+			throw new ResponseStatusException(status, ex.getMessage());
+		}		
 	}
 
 }

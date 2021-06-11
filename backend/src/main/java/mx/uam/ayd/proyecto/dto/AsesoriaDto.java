@@ -37,8 +37,20 @@ public class AsesoriaDto {
 	@NotNull
 	private float costo;
 
+	@NotEmpty
+	private String url;
+	
 	@NotEmpty(message = "El campo no debe ser vacio")
 	private String ubicacion;
+	
+	@NotEmpty
+	private String estado;
+	
+	@NotNull
+	private float puntuacion;
+	
+	@NotNull
+	private int totalPuntuaciones;
 		
 	@NotNull
 	private long materia;
@@ -69,9 +81,12 @@ public class AsesoriaDto {
 		dto.setHoraTermino(asesoria.getHoraTermino());
 		dto.setCosto(asesoria.getCosto());
 		dto.setUbicacion(asesoria.getUbicacion());
-		dto.setAlumno(asesoria.getIdAlumno());
+		dto.setPuntuacion(asesoria.getPuntuacion());
+		dto.setTotalPuntuaciones(asesoria.getTotalPuntuaciones());
+		dto.setUrl(asesoria.getUrl());
+		dto.setEstado(asesoria.getEstado());
 		dto.setMateria(asesoria.getMateria().getIdMateria());
-		dto.setComentarios(asesoria.getComentarios());
+		dto.setAlumno(asesoria.getIdAlumno());
 		
 		return dto;
 	}

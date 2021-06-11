@@ -148,8 +148,6 @@ public class ServicioComentario {
 		return optComentario.isPresent();
 	}
 	
-	
-	
 	public List<ComentarioDto> recuperaComentarios() {
 		List<ComentarioDto> comentariosDto = new ArrayList<>();
 
@@ -159,5 +157,46 @@ public class ServicioComentario {
 
 		return comentariosDto;
 	}
-
+	
+	public ComentarioDto actualizar(Long idAlumno, Long idComentario, Long idAsesoria, ComentarioDto comentarioDto) {
+		// Vemos si esta en la BD el alumno
+		Optional<Alumno> optAlumno = alumnoRepository.findById(idAlumno);
+		if(optAlumno.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró el alumno");
+		}		
+		Alumno alumno = optAlumno.get();
+		
+		//Vemos si esta en la BD el comentario
+		Optional<Comentario> optComentario = comentarioRepository.findById(idComentario);
+		if(optComentario.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró el comentario");
+		}
+		Comentario comentario = optComentario.get();
+		
+		//Vemos si esta en la BD el alumno
+		Optional<Asesoria> optAsesoria = asesoriaRepository.findById(idAsesoria);
+		if(optAsesoria.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró la asesoria");
+		}
+		Asesoria asesoria = optAsesoria.get();
+		
+		//Se actuliza el contenido 
+		comentario.setContenido(comentarioDto.getContenido());
+		comentario.setFechaCreacion(comentarioDto.getFechaCreacion());
+		comentario.setIdAlumno(alumno.getIdAlumno());
+		comentario.setIdAsesoria(asesoria.getIdAsesoria());
+		comentario.setAlumno(alumno);
+		comentario.setAsesoria(asesoria);
+		
+		comentario = comentarioRepository.save(comentario);
+		
+		asesoria.addComentario(comentario);
+		asesoriaRepository.save(asesoria);
+		
+		alumno.addComentario(comentario);
+		alumnoRepository.save(alumno);
+		
+		return ComentarioDto.creaComentarioDto(comentario);
+	
+	}
 }
