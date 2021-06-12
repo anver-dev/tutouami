@@ -1,5 +1,4 @@
 package mx.uam.ayd.proyecto;
-import java.util.Collection;
 import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;

@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.ComentarioRepository;
-import mx.uam.ayd.proyecto.dto.AlumnoDto;
-import mx.uam.ayd.proyecto.dto.AsesoriaDto;
 import mx.uam.ayd.proyecto.dto.ComentarioDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
@@ -31,8 +29,7 @@ public class ServicioComentario {
 	@Autowired 
 	private ComentarioRepository comentarioRepository;
 	
-	@Autowired 
-	private ServicioAsesoria servicioAsesoria;
+	
 	
 	///alumno/{id}/asesesoria/{id}/comentario
 	
