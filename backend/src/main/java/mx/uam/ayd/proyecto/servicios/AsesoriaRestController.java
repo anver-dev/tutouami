@@ -10,8 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -112,5 +114,45 @@ public class AsesoriaRestController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la asesoria");
 		}
 	}
+	
+	/**
+	 * Comienza HU-04: Como alumno quiero seleccionar una asesoría para editar la información.
+	 * Metodo para actualizar una asesoria
+	 * 
+	 * @param id
+	 * @param usuario
+	 * @return
+	 */
+	@ApiOperation(value = "Actualiza una asesoria", notes = "Se actualiza la asesoria a través del DTO y de su id  y el id del alumno")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Asesoria Actualizada exitosamente"),
+			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
+			@ApiResponse(code = 500, message = "Error en el servidor") })
+	@PatchMapping(path = "/alumnos/{idAlumno}/asesoria/{idAsesoria}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AsesoriaDto> update(  @PathVariable("idAlumno") Long idAlumno,
+												@PathVariable("idAsesoria") Long idAsesoria,
+												@RequestBody @Valid AsesoriaDto asesoriaDto) {
+
+		System.out.println(asesoriaDto);
+		// Traza
+		log.info("Actualizando la asesoria con id " + idAsesoria + " Del alumno: " + idAlumno);
+
+		try {
+			// Se manda a llamar al servicio
+			AsesoriaDto asesoria = servicioAsesoria.actualizar(idAsesoria, idAlumno, asesoriaDto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(asesoria);
+		} catch (Exception ex) {
+
+			HttpStatus status;
+
+			if (ex instanceof IllegalArgumentException) {
+				status = HttpStatus.BAD_REQUEST;
+			} else {
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+
+			throw new ResponseStatusException(status, ex.getMessage());
+		}
+	}
+
 	
 }

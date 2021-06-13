@@ -134,4 +134,60 @@ public class ServicioAsesoria {
 		Optional<Asesoria> optAsesoria = asesoriaRepository.findById(idAsesoria);
 		return AsesoriaDto.creaAsesoriaDto(optAsesoria.get());
 	}
+	
+	/**
+	 * 
+	 * Acualizar una asesoria
+	 * 
+	 * @param idAsesoria 
+	 * @param idAlumno
+	 * @param asesoriaDto
+	 * @return regreso dto con los cambios
+	 */
+	public AsesoriaDto actualizar(Long idAsesoria,Long idAlumno, AsesoriaDto asesoriaDto) {
+		
+		Optional<Asesoria> optionalAsesoria = asesoriaRepository.findById(idAsesoria);
+		
+		if(optionalAsesoria.isEmpty()) 
+			throw new IllegalArgumentException("No se encontró la asesoria");
+		Asesoria asesoria = optionalAsesoria.get();
+		
+		Optional<Alumno> optionalAlumno = alumnoRepository.findById(idAlumno);
+		
+		if(optionalAlumno.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró el alumno");
+		}
+		Alumno alumno = optionalAlumno.get();		
+		
+		Optional<Materia> optMateria = materiaRepository.findById(asesoria.getMateria().getIdMateria());
+		
+		if(optMateria.isEmpty()) {
+			throw new IllegalArgumentException("No se encontró la materia");
+		}
+		
+		Materia materia = optMateria.get();
+		
+		asesoria.setDia(asesoriaDto.getDia());//dia
+		asesoria.setTipo(asesoriaDto.getTipo());//tipo
+		asesoria.setDetalles(asesoria.getDetalles());//
+		asesoria.setHoraInicio(asesoriaDto.getHoraInicio());//hora
+		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());//hora 
+		asesoria.setCosto(asesoria.getCosto());
+		asesoria.setUbicacion(asesoriaDto.getUbicacion()); //estado
+		asesoria.setUrl(asesoriaDto.getUrl()); //url
+		asesoria.setTotalPuntuaciones(asesoria.getTotalPuntuaciones());
+		asesoria.setPuntuacion(asesoria.getPuntuacion());
+		asesoria.setEstado(asesoria.getEstado());
+		asesoria.setMateria(materia); //materia
+		asesoria.setIdAlumno(alumno.getIdAlumno());
+		asesoria = asesoriaRepository.save(asesoria);
+		
+		materia.addAsesoria(asesoria);
+		materiaRepository.save(materia);
+		
+		alumno.addAsesoria(asesoria);
+		alumnoRepository.save(alumno);
+		
+		return AsesoriaDto.creaAsesoriaDto(asesoria);
+	}
 }

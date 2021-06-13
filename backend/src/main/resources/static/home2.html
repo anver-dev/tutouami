@@ -333,11 +333,47 @@
                                     </select>
                                 </div>
                             </div>
+                            <!--Ubicacion-->
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label for="ubicacion" class="form-control-label">Ubicacion: </label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="ubicacion" name="text-input" placeholder="" class="form-control" required>
+                                </div>
+                            </div>
+                            <!--Estado-->
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label for="estado" class="form-control-label">Estado: </label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="estado" name="text-input" placeholder="" class="form-control" required>
+                                </div>
+                            </div>
+                            <!--URL-->
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label for="url" class="form-control-label">URL: </label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="url" name="text-input" placeholder="" class="form-control" required>
+                                </div>
+                            </div>
+                            <!--Detalles-->
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <label for="detalles" class="form-control-label">Detalles: </label>
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <input type="text" id="detalles" name="text-input" placeholder="" class="form-control" required>
+                                </div>
+                            </div>
                         </div>
                         <!--Fin Modal Body-->
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCELAR</button>
-                          <button type="submit" id="btnGuardar" class="btn btn-primary">ACEPTAR</button>
+                          <button type="button" id="btnGuardar" class="btn btn-primary btnAceptar" onclick="enviarForm()">ACEPTAR</button>
                         </div>
                     </form>
                   </div>
@@ -435,34 +471,15 @@
             ));
           }//fin del for
         }//fin function
-        //Para mostrar los datos dentro del modal
-        $(document).on("click", ".btnEditar", function(){
-              var fila = $(this).closest("tr");
-              id = parseInt(fila.find('td:eq(0)').text());
-              //alert(id);
-              materia = fila.find('td:eq(1)').toString();
-              //alert(materia);
-              dia = fila.find('td:eq(2)').text();
-              horaInicio = parseInt(fila.find('td:eq(3)').text());
-              horaTermino = parseInt(fila.find('td:eq(4)').text());
-              tipo = fila.find('td:eq(5)').text();              
-
-              $("#materias").val(materia);
-              $("#tipo").val(tipo);
-              $("#horaInicio").val(horaInicio);
-              $("#horaTermino").val(horaTermino);
-              $("#dia").val(dia);
-
-        });
         
         $(document).on("click", ".btnBorrar", function(){
             var urlAsesoria = "http://localhost:8080/v1/alumnos/1/asesoria";
             var fila = $(this).closest("tr");
             id = fila.find('td:eq(0)').text();
             console.log(id);
-            idBorrar = JSON.stringify(id);
+            //idBorrar = JSON.stringify(id);
             //function eliminar(){
-                console.log(idBorrar);
+                //console.log(idBorrar);
                 $.ajax({
                     url: urlAsesoria+"/"+id,
                     type: 'DELETE',
@@ -513,45 +530,81 @@
         };
     </script>
     <!--Fin script-->
-   <!--Eliminar asesoria-->
+   <!--Editar asesoria-->
    <script>
-       /* var url = "http://localhost:8080/v1/alumnos/1/asesoria";
-        $(document).on("click", ".btnAceptar", function(){
-            var fila = $(this).closest("tr");
-            id = parseInt(fila.find('td:eq(0)').text());
-            $.ajax({
-                url: url + "/" + $(id).val(),
-                type: "delete",
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                error: function (e) {
-                    console.log("ERROR : ", e);
-                }
-            });
+        //Para mostrar los datos dentro del modal
+        //var parametro = new URLSearchParams(window.location.search);
+        //var id = searchParams.get(fila.find('td:eq(0)').text());
+        var urlEditarAsesoria = "http://localhost:8080/v1/alumnos/1/asesoria";
+        var fila = $(this).closest("tr");
+        //id = fila.find('td:eq(0)').text();
 
-        });*/
-   </script>
-   <script>
-        /*var url = "http://localhost:8080/v1/alumnos/1/asesoria";
-        id = parseInt(fila.find('td:eq(0)').text());
-        function eliminar(){
+        $(document).on("click", ".btnEditar", function(){
+              var fila = $(this).closest("tr");
+              id = parseInt(fila.find('td:eq(0)').text());
+              //alert(id);
+              materia = fila.find('td:eq(1)').toString();
+              //alert(materia);
+              dia = fila.find('td:eq(2)').text();
+              horaInicio = parseInt(fila.find('td:eq(3)').text());
+              horaTermino = parseInt(fila.find('td:eq(4)').text());
+              tipo = fila.find('td:eq(5)').text();              
+              ubicacion = fila.find('td:eq(6)').text();
+
+              $("#materias").val(materia);
+              $("#tipo").val(tipo);
+              $("#horaInicio").val(horaInicio);
+              $("#horaTermino").val(horaTermino);
+              $("#dia").val(dia);
+              $("#ubicacion").val(ubicacion);
+              
+        });
+
+        //$(document).on("click", ".btnAceptar", function(){
+        function enviarForm(){
+            var fila = $("#tabla-asesoria").closest("tr");
+            //id = fila.find('td:eq(0)').text();
+            console.log("Entre en enviarForm " + id);
             $.ajax({
-                url: url+"/"+JSON.stringify(id),
-                type: 'DELETE',
+                url: urlEditarAsesoria+"/"+id,
+                type: 'PATCH',
                 dataType: 'json',
-                contentType: 'application/json',
-                data: {id:id},
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({"dia":$("#dia").val(),"horaInicio":$("#horaInicio").val(),"horaTermino":$("#horaTermino").val(),"materias":$("#materia").val(),"tipo":$("#tipo").val(), "ubicacion":$("#ubicacion").val(), "estado":$("#estado").val(),
+                "url":$("#url").val(), "detalles":$("#detalles").val()}),
+                //console.log(data);
                 success: function(data){ 
-                    alert("usuario eeliminado con exito");
+                    //alert("asesoria actualizada con exito");
+                    console.log(data);
+                    window.location.reload();
                 },
-                error: function(data) {
-                    alert("error eliminando el usuario "+data.responseText);
+                error: function (xhr, status) {
+                    // check if xhr.status is defined in $.ajax.statusCode
+                        // if true, return false to stop this function
+                    if (typeof this.statusCode[xhr.status] != "undefined") {
+                        return false;
+                    }
+                        // else continue
+                    console.log("ajax.error"+status);
+                },
+                statusCode: {
+                    200: function (response) {
+                        console.log("ajax.statusCode: 200");
+                        console.log(response);
+                        window.location.reload();
+                    },
+                    201: function (response) {
+                        console.log("ajax.statusCode: 200");
+                        console.log(response);
+                        window.location.reload();
+                    }
                 }
-            });
-        }
-*/
-    </script>
-    <!--<script src="/static/js/script.js"></script>-->
+            })
+            console.log(JSON.stringify({"dia":$("#dia").val(),"horaInicio":$("#horaInicio").val(),"horaTermino":$("#horaTermino").val(),"materias":$("#materia").val(),"tipo":$("#tipo").val(), "ubicacion":$("#ubicacion").val(), "estado":$("#estado").val(),
+                "url":$("#url").val(), "detalles":$("#detalles").val()}));
+        };
+        //});
+   </script>
 </body>
 </html>
 <!-- end document-->
