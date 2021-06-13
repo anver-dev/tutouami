@@ -165,24 +165,6 @@ public class ServicioAsesoria {
 		return AsesoriaDto.creaAsesoriaDto(asesoria);
 	}
 
-
-	/**
-	 * Recuperar las asesorias de un usuario 
-	 * 
-	 * @param idAlumno 
-	 * 
-	 * @return lista de asesorias
-	 */
-	public List<AsesoriaDto> recuperaAsesorias(Long idAlumno) {
-		
-		List<AsesoriaDto> asesorias = new ArrayList<AsesoriaDto>();
-		for (Asesoria asesoria : asesoriaRepository.findAll()) {
-			if(idAlumno == asesoria.getIdAlumno() )
-				asesorias.add(AsesoriaDto.creaAsesoriaDto(asesoria));
-		}
-		
-		return asesorias;
-	}
 	
 	/**
 	 * Recupera todas las asesorias 
@@ -242,60 +224,4 @@ public class ServicioAsesoria {
 		return AsesoriaDto.creaAsesoriaDto(optAsesoria.get());
 	}
 	
-	/**
-	 * 
-	 * Acualizar una asesoria
-	 * 
-	 * @param idAsesoria 
-	 * @param idAlumno
-	 * @param asesoriaDto
-	 * @return regreso dto con los cambios
-	 */
-	public AsesoriaDto actualizar(Long idAsesoria,Long idAlumno, AsesoriaDto asesoriaDto) {
-		
-		Optional<Asesoria> optionalAsesoria = asesoriaRepository.findById(idAsesoria);
-		
-		if(optionalAsesoria.isEmpty()) 
-			throw new IllegalArgumentException("No se encontró la asesoria");
-		Asesoria asesoria = optionalAsesoria.get();
-		
-		Optional<Alumno> optionalAlumno = alumnoRepository.findById(idAlumno);
-		
-		if(optionalAlumno.isEmpty()) {
-			throw new IllegalArgumentException("No se encontró el alumno");
-		}
-		Alumno alumno = optionalAlumno.get();		
-		
-		Optional<Materia> optMateria = materiaRepository.findById(asesoriaDto.getMateria());
-		
-		if(optMateria.isEmpty()) {
-			throw new IllegalArgumentException("No se encontró la materia");
-		}
-		
-		Materia materia = optMateria.get();
-		
-		asesoria.setDia(asesoriaDto.getDia());
-		asesoria.setTipo(asesoriaDto.getTipo());
-		asesoria.setDetalles(asesoriaDto.getDetalles());
-		asesoria.setHoraInicio(asesoriaDto.getHoraInicio());
-		asesoria.setHoraTermino(asesoriaDto.getHoraTermino());
-		asesoria.setCosto(asesoriaDto.getCosto());
-		asesoria.setUbicacion(asesoriaDto.getUbicacion());
-		asesoria.setUrl(asesoriaDto.getUrl());
-		asesoria.setTotalPuntuaciones(asesoriaDto.getTotalPuntuaciones());
-		asesoria.setPuntuacion(asesoriaDto.getPuntuacion());
-		asesoria.setEstado(asesoriaDto.getEstado());
-		asesoria.setMateria(materia);
-		asesoria.setIdAlumno(alumno.getIdAlumno());
-		asesoria = asesoriaRepository.save(asesoria);
-		
-		materia.addAsesoria(asesoria);
-		materiaRepository.save(materia);
-		
-		alumno.addAsesoria(asesoria);
-		alumnoRepository.save(alumno);
-		
-		return AsesoriaDto.creaAsesoriaDto(asesoria);
-
-	}
 }
