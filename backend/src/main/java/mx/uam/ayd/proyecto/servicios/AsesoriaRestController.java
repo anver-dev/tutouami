@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,23 +30,28 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.ayd.proyecto.config.Seguridad;
 import mx.uam.ayd.proyecto.dto.AsesoriaDto;
 
 import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
 
 import mx.uam.ayd.proyecto.negocio.ServicioAsesoria;
+import mx.uam.ayd.proyecto.seguridad.ServicioSeguridad;
 
 @RestController
 @RequestMapping("/v1") // Versionamiento
 @Slf4j
 public class AsesoriaRestController {
-	
+
 	@Autowired
 	private ServicioAlumno servicioAlumno;
-	
+
 	@Autowired
 	private ServicioAsesoria servicioAsesoria;
-	
+
+	@Autowired
+	private ServicioSeguridad servicioSeguridad;
+
 	/**
 	 * Método que permite agregar una asesoria a un alumno
 	 * 
@@ -53,31 +59,31 @@ public class AsesoriaRestController {
 	 * @return
 	 */
 	@ApiOperation(value = "Agrega una asesoria", notes = "Se agrega una asesoria a través del DTO")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Asesoria agregada exitosamente"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Asesoria agregada exitosamente"),
 			@ApiResponse(code = 404, message = "No se encontro al alumno para agregar la asesoria"),
-			@ApiResponse(code = 500, message = "Error al agregar la asesoria")})
+			@ApiResponse(code = 500, message = "Error al agregar la asesoria") })
 	@PostMapping(path = "/alumnos/{id}/asesoria", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AsesoriaDto> create(@RequestBody @Valid AsesoriaDto nuevaAsesoria,@PathVariable("id")Long id) {
+	public ResponseEntity<AsesoriaDto> create(@RequestBody @Valid AsesoriaDto nuevaAsesoria,
+			@PathVariable("id") Long id) {
 		try {
-			AsesoriaDto asesoriaDto = servicioAsesoria.agregaAsesoria(nuevaAsesoria,id);
+			AsesoriaDto asesoriaDto = servicioAsesoria.agregaAsesoria(nuevaAsesoria, id);
 			return ResponseEntity.status(HttpStatus.CREATED).body(asesoriaDto);
 		} catch (Exception e) {
 			HttpStatus status;
-			
-			if(e instanceof IllegalArgumentException) {
+
+			if (e instanceof IllegalArgumentException) {
 				status = HttpStatus.BAD_REQUEST;
 			} else {
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
-			
+
 			throw new ResponseStatusException(status, e.getMessage());
 		}
 	}
-	
 
-	
 	/**
+
+
      * Permite recuperar todas las materias
      * 
      * @return
@@ -198,7 +204,6 @@ public class AsesoriaRestController {
 			HttpStatus status;
 
 			if (ex instanceof IllegalArgumentException) {
-
 				status = HttpStatus.BAD_REQUEST;
 			} else {
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -224,6 +229,7 @@ public class AsesoriaRestController {
 	public ResponseEntity<List<AsesoriaDto>> retrieveAll(@PathVariable("idAlumno") Long idAlumno){
 		List<AsesoriaDto> asesoriasDto = servicioAsesoria.recuperaAsesorias(idAlumno);
 		return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);
+
 	}
 	
 	/**
