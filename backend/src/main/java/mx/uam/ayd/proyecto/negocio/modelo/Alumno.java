@@ -25,6 +25,7 @@ import lombok.Data;
  */
 @Entity
 @Data
+
 public class Alumno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +43,9 @@ public class Alumno {
 	private int totalPuntuaciones;
 	private String descripcion;
 	private String estado;
+
 	
-	@ManyToOne
+	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true )
   private Carrera carrera;
 
 	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -53,10 +55,12 @@ public class Alumno {
 	
 	@OneToMany(targetEntity = Inscripcion.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
+	@JsonIgnore
 	private final List<Inscripcion> inscripciones = new ArrayList<>();
 	
-	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
+	@JsonIgnore
 	private final List<Comentario> comentarios = new ArrayList<>();
 	
 	
@@ -116,7 +120,7 @@ public class Alumno {
 	public boolean addComentario(Comentario comentario) {
 
 		if (comentario == null) {
-			throw new IllegalArgumentException("El usuario no puede ser null");
+			throw new IllegalArgumentException("El comentario no puede ser null");
 		}
 
 		if (comentarios.contains(comentario)) {
