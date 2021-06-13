@@ -2,7 +2,6 @@ package mx.uam.ayd.proyecto.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -58,10 +57,10 @@ public class AsesoriaDto {
 	@NotNull
 	private long alumno;
 
+
 	
 	private List <Comentario> comentarios = new ArrayList <> ();
-	
-	
+
 	/**
 	 * Este método permite generar un DTO a partir de la entidad
 	 * nota: es un método de clase y no se necesita un objeto

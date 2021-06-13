@@ -8,11 +8,16 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Comentario;
+import mx.uam.ayd.proyecto.negocio.modelo.Carrera;
+
 
 /**
  * DTO de alumnos
@@ -26,6 +31,7 @@ public class AlumnoDto {
 	@NotEmpty
 	private String nombre;
 	
+
 	@NotEmpty
 	private String apellidoPaterno;
 	
@@ -36,6 +42,7 @@ public class AlumnoDto {
 	private int edad;
 	
 	@Email
+	@NotEmpty
 	private String correo;
 	
 	@NotEmpty
@@ -105,4 +112,36 @@ public class AlumnoDto {
 		return dto;
 	}
 
+	/**
+	 * Este mÃ©todo permite generar un DTO a partir de la entidad
+	 * nota: es un mÃ©todo de clase y no se necesita un objeto
+	 * para invocarlo. Se invoca como UsuarioDto.crea(param)
+     * @param usuario la entidad
+	 * @return dto obtenido a partir de la entidad
+	 */
+	
+	public static AlumnoDto creaAlumnoDto(Alumno alumno) {
+		AlumnoDto dto = new AlumnoDto();
+		
+		dto.setIdAlumno(alumno.getIdAlumno());
+		dto.setNombre(alumno.getNombre());
+		dto.setApellidoPaterno(alumno.getApellidoPaterno());
+		dto.setApellidoMaterno(alumno.getApellidoMaterno());
+		dto.setEdad(alumno.getEdad());
+		dto.setCorreo(alumno.getCorreo());
+		dto.setContrasenia(alumno.getContrasenia());
+		dto.setTelefono(alumno.getTelefono());
+		dto.setCv(alumno.getCv());
+		dto.setTrimestre(alumno.getTrimestre());
+		dto.setPuntuacion(alumno.getPuntuacion());
+		dto.setTotalPuntuaciones(alumno.getTotalPuntuaciones());
+		dto.setDescripcion(alumno.getDescripcion());
+		dto.setEstado(alumno.getEstado());
+		dto.setCarrera(alumno.getCarrera().getIdCarrera());
+		
+		return dto;
+	}
+	
+	
+	
 }

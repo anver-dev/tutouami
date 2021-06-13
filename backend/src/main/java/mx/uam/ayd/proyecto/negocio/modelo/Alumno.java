@@ -43,13 +43,12 @@ public class Alumno {
 	private int totalPuntuaciones;
 	private String descripcion;
 	private String estado;
-	
-	@ManyToOne
-    private Carrera carrera;
-		
-	
+
 	
 	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true )
+  private Carrera carrera;
+
+	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
 	private final List<Asesoria> asesorias = new ArrayList<>();

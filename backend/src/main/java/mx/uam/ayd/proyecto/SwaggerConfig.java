@@ -1,4 +1,5 @@
 package mx.uam.ayd.proyecto;
+
 import java.util.Collection;
 import java.util.Collections;
 
@@ -43,4 +44,6 @@ public class SwaggerConfig {
 		  "License of API", "API license URL", Collections.emptyList());
 	}
 
+
 }
+
