@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,5 +81,36 @@ public class AsesoriaRestController {
         return ResponseEntity.status(HttpStatus.OK).body(asesorias);
         
     }
+    
+    /**
+	 * Comienza HU-05: Como alumno quiero seleccionar una asesoría para eliminarla
+	 * de mi perfil. Metodo para eliminar una asesoria
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@ApiOperation(value = "Eliminar asesoria", notes = "Se elimina una asesoria apartir de su id")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Se elimino la asesoria"),
+			@ApiResponse(code = 404, message = "No encontrada"),
+			@ApiResponse(code = 500, message = "Error en el servidor") })
+	@DeleteMapping(path = "/alumnos/{idAlumno}/asesoria/{idAsesoria}")
+	public ResponseEntity<?> delete(@PathVariable("idAlumno") Long idAlumno,
+			@PathVariable("idAsesoria") Long idAsesoria) {
 
+		try {
+			AsesoriaDto asesoria = servicioAsesoria.buscarID(idAsesoria);
+			if (asesoria != null) {
+				log.info("Se va eliminar la asesoria con id " + idAsesoria + ", del alumno con id: " + idAlumno);
+				servicioAsesoria.eliminarAsesoria(idAlumno, idAsesoria);
+				return ResponseEntity.status(HttpStatus.OK).body("Se elimino la asesoria");
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La asesoria no existe");
+			}
+
+		} catch (Exception ex) {
+			log.info("Error: " + ex);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la asesoria");
+		}
+	}
+	
 }

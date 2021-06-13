@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
@@ -15,7 +16,9 @@ import mx.uam.ayd.proyecto.dto.MateriaDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
+import mx.uam.ayd.proyecto.servicios.AsesoriaRestController;
 
+@Slf4j
 @Service
 public class ServicioAsesoria {
 
@@ -108,5 +111,27 @@ public class ServicioAsesoria {
 		return asesoriasDto;
 	}
 	
+	/**
+	 * Se elimina una asesoria con su id
+	 * 
+	 * @param idAsesoria el id de la asesoria
+	 * @param idAlumno el id del usuario
+	 */
+	public void eliminarAsesoria(Long idAlumno, Long idAsesoria) {
+		
+		log.info("Se va a eliminar la asesoria con id: "+ idAsesoria);
+		asesoriaRepository.deleteById(idAsesoria);
+		
+	}
 	
+	/**
+	 * Busca una asesoria en la BD por su id
+	 * 
+	 * @param idAsesoria
+	 * @return
+	 */
+	public AsesoriaDto buscarID(Long idAsesoria) {
+		Optional<Asesoria> optAsesoria = asesoriaRepository.findById(idAsesoria);
+		return AsesoriaDto.creaAsesoriaDto(optAsesoria.get());
+	}
 }

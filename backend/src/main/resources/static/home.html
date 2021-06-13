@@ -33,6 +33,55 @@
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
 
+    <!--Script para mostrar los datos del API-->
+    <script>
+        /*var xmlhttp = new XMLHttpRequest();
+        var url = "http://localhost:8080/v1/asesorias";
+        
+        xmlhttp.onreadystatechange=function() {
+          if (this.readyState == 4 && this.status == 200) {
+              myFunction(this.responseText);
+          }
+        };
+        
+        xmlhttp.open("GET", url, false);
+        xmlhttp.send();
+        
+        function myFunction(url) {
+          var arr = JSON.parse(url);
+          console.log(arr);
+          var i;
+          var out = "<div class='col-md-4'>";
+          
+          for(i = 0; i < arr.length; i++) {
+            out +=  "<div class='card'>" +
+                        "<div class='card-header'>"+
+                            "<strong class='card-title mb-3'>" + arr[i].materia + "</strong>" +
+                        "</div>" +
+                        
+                        "<div class='card-body'>" + 
+                            "<div class='mx-auto d-block'>" +
+                                "<p> Dia: " + arr[i].dia + "</p>" +
+                                "<p> Hora Inicio: " + arr[i].horaInicio + "</p>" +
+                                "<p> Hora Termino: " + arr[i].horaTermino + "</p>" +
+                                "<p> Tipo: " + arr[i].tipo + "</p>" +
+                                "<strong class='card-title mb-3'> Ubicacion: " + arr[i].ubicacion + "</strong>" +
+                            "</div>" +
+                            "<hr>"+
+                            "<div class='card-text text-sm-center'>"+
+                                "<a href='editar-asesoria.html'>"+
+                                    "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#exampleModal'>Editar</button> </a>"+
+                                "<button type='button' class='btn btn-danger' data-toggle='modal' data-target='#exampleModalCenter'>Eliminar</button>" +
+                            "</div>" +
+                        "</div>" + 
+                    "</div>";
+          }
+          
+          out = "</div>";
+          document.getElementById("id01").innerHTML = out;
+        }*/
+    </script>
+
 </head>
 
 <body class="animsition">
@@ -241,30 +290,13 @@
                 </div>
             </header>
             <!-- HEADER DESKTOP-->
+
             <!-- MAIN CONTENT-->
             <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <strong class="card-title mb-3">APANLOO</strong>
-                                    </div>
-                                    <!--Tarjetas para las asesorias-->
-                                    <div class="card-body" id="id01">
-                                        
-                                        <hr>
-                                        <div class="card-text text-sm-center">
-                                            <a href="editar-asesoria.html">
-                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">Editar</button>
-                                            </a>
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Eliminar</button>
-                                        </div>
-                                    </div>
-                                    <!--Fin Tarjetas-->
-                                </div>
-                            </div>
+                        <div class="row" id="idCard"><!--A partir de aqui van las tarjetas-->
+                            
                         </div>
                     </div>
                 </div>
@@ -319,8 +351,6 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
-    
-    <!--Script para mostrar los datos del API-->
     <script>
         var xmlhttp = new XMLHttpRequest();
         var url = "http://localhost:8080/v1/asesorias";
@@ -329,29 +359,43 @@
           if (this.readyState == 4 && this.status == 200) {
               myFunction(this.responseText);
           }
-        }
+        };
         
-        xmlhttp.open("GET", url, false);
+        xmlhttp.open("GET", url, true);
         xmlhttp.send();
         
         function myFunction(url) {
           var arr = JSON.parse(url);
-            console.log(arr);
-          var i;
-          var out = "<div>";
+          console.log(arr);
           
-          for(i = 0; i < arr.length; i++) {
-            out += "<h5>" + arr[i].materia + "</h5>" + 
-                    "<p>" + arr[i].dia + "</p>" +
-                    "<p>" + arr[i].horaInicio + "</p>" +
-                    "<p>" + arr[i].horaTermino + "</p>" +
-                    "<p>" + arr[i].tipo + "</p>" +
-                   "<div>" + arr[i].ubicacion + "</div>" ;
-          }
-          out += "</div>";
-          document.getElementById("id01").innerHTML = out;
+          $("#idCard").append($(
+              "<div class='col-md-4'>" +
+                "<div class='card'>" +
+                    "<div class='card-header'>"+
+                        "<strong class='card-title mb-3'>" + arr[i].materia + "</strong>" +
+                    "</div>" +
+                        
+                    "<div class='card-body'>" + 
+                        "<div class='mx-auto d-block'>" +
+                            "<p> Dia: " + arr[i].dia + "</p>" +
+                            "<p> Hora Inicio: " + arr[i].horaInicio + "</p>" +
+                            "<p> Hora Termino: " + arr[i].horaTermino + "</p>" +
+                            "<p> Tipo: " + arr[i].tipo + "</p>" +
+                            "<strong class='card-title mb-3'> Ubicacion: " + arr[i].ubicacion + "</strong>" +
+                        "</div>" +
+                        "<hr>"+
+                        "<div class='card-text text-sm-center'>"+
+                            "<a href='editar-asesoria.html'>"+
+                                "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#exampleModal'>Editar</button> </a>"+
+                            "<button type='button' class='btn btn-danger' data-toggle='modal' data-target='#exampleModalCenter'>Eliminar</button>" +
+                        "</div>" +
+                    "</div>" + 
+                "</div>" +
+            "</div>"
+          ));
         }
     </script>
+    <!--<script src="/static/js/script.js"></script>-->
 </body>
 </html>
 <!-- end document-->
