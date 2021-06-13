@@ -1,7 +1,6 @@
 package mx.uam.ayd.proyecto.servicios;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -25,8 +24,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.ayd.proyecto.config.Seguridad;
 import mx.uam.ayd.proyecto.dto.AsesoriaDto;
-import mx.uam.ayd.proyecto.dto.UsuarioDto;
 import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
 import mx.uam.ayd.proyecto.negocio.ServicioAsesoria;
 import mx.uam.ayd.proyecto.seguridad.ServicioSeguridad;
@@ -140,7 +139,7 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@GetMapping(path = "/alumnos/{idAlumno}/asesoria", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AsesoriaDto>> retrieveAll(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = ServicioSeguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
 			@ApiParam(name = "idAlumno", value = "identificador del alumno", required = true, example = "0") @RequestParam(name = "idAlumno", required = true) Long idAlumno) {
 		try {
 

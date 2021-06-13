@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.ayd.proyecto.config.Seguridad;
 import mx.uam.ayd.proyecto.dto.MateriaDto;
 import mx.uam.ayd.proyecto.negocio.ServicioMateria;
 import mx.uam.ayd.proyecto.seguridad.ServicioSeguridad;
@@ -39,7 +40,7 @@ public class MateriaRestController {
      */
     @GetMapping(path = "/materias", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <List<MateriaDto>> retrieveAll(
-    		@ApiParam(name = "Authorization", value = "Bearer token", example = ServicioSeguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+    		@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
     	try {
 
 			// Revisamos si es un JWT válido para esta petición, quitamos la parte de bearer

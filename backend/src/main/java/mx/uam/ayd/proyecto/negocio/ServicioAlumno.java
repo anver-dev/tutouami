@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 import mx.uam.ayd.proyecto.datos.CarreraRepository;
 import mx.uam.ayd.proyecto.dto.AlumnoDto;
@@ -14,7 +13,6 @@ import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Carrera;
 
 @Service
-@Slf4j
 public class ServicioAlumno {
 	@Autowired
 	private AlumnoRepository alumnoRepository;
@@ -100,17 +98,16 @@ public class ServicioAlumno {
 	}
 
 	public Optional<Alumno> obtenerAlumnoPorCorreoYContrasenia(String correo, String contrasenia) {
-		log.info("correo: " + correo + " contrasenia: " + contrasenia);
-		Alumno alumnoEncontrado = alumnoRepository.findByCorreo(correo);
-		Optional<Alumno> opAlumno = Optional.of(alumnoEncontrado);
-
-		if (opAlumno.isEmpty())
-			return null;
-
-		Alumno alumno = opAlumno.get();
-
+		
+		Alumno alumno = alumnoRepository.findByCorreo(correo);
+		Optional<Alumno> opAlumno;
+		if(alumno != null) 
+			opAlumno = Optional.of(alumno);
+		else 
+			return Optional.empty();
+		
 		if (!validaContrasenia(alumno.getContrasenia(), contrasenia))
-			return null;
+			return Optional.empty();
 
 		return opAlumno;
 	}

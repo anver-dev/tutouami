@@ -25,6 +25,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.ayd.proyecto.config.Seguridad;
 import mx.uam.ayd.proyecto.dto.AlumnoDto;
 import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
@@ -49,10 +50,10 @@ public class AlumnoRestController {
 	private ServicioSeguridad servicioSeguridad;
 
 	/**
-	 * Metodo para actualizar una asesoria
+	 * Metodo para actualizar un alumno
 	 * 
-	 * @param id
-	 * @param usuario
+	 * @param id del alumno
+	 * @param usuario datos a actualizar
 	 * @return
 	 */
 	@ApiOperation(value = "Actualiza el perfil de un alumno", notes = "Se actualiza el alumno")
@@ -67,13 +68,15 @@ public class AlumnoRestController {
 		log.info("Actualizando el alumno con id: " + idAlumno);
 
 		try {
+			
 			// Se manda a llamar al servicio
 			AlumnoDto alumno = servicioAlumno.actualizarAlumno(idAlumno, alumnoDto);
+			
 			return ResponseEntity.status(HttpStatus.CREATED).body(alumno);
 		} catch (Exception ex) {
 
 			HttpStatus status;
-
+			
 			if (ex instanceof IllegalArgumentException) {
 				status = HttpStatus.BAD_REQUEST;
 			} else {
@@ -98,6 +101,7 @@ public class AlumnoRestController {
 	public ResponseEntity<AlumnoDto> create(@RequestBody AlumnoDto nuevoAlumnoDto) {
 
 		log.info("Empezando HU-01");
+		
 		try {
 			AlumnoDto alumnoDto = servicioAlumno.agregarAlumno(nuevoAlumnoDto);
 
@@ -128,7 +132,7 @@ public class AlumnoRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@GetMapping(path = "/alumnos/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> retrieveAll(@PathVariable("correo") Long idAlumnoAbuscar,
-			@ApiParam(name = "Authorization", value = "Bearer token", example = ServicioSeguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
 
 		try {
 

@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import mx.uam.ayd.proyecto.config.Seguridad;
 import mx.uam.ayd.proyecto.dto.AlumnoDto;
 import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
 import mx.uam.ayd.proyecto.seguridad.ServicioSeguridad;
@@ -58,31 +59,25 @@ public class CuentaRestController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Alumno logueado exitosamente"),
 			@ApiResponse(code = 404, message = "El alumno no pudo loguearse"),
 			@ApiResponse(code = 500, message = "Error en el servidor") })
-	@PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/cuenta/acceso", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, String>> login(
 			@ApiParam(value = "Correo", required = true) @RequestHeader(name = "Correo", required = true) String correo,
 			@ApiParam(value = "Contrasenia", required = true) @RequestHeader(name = "Contrasenia", required = true) String contrasenia) {
 
-		log.info("Correo: " + correo + " Contrasenia: " + contrasenia);
+		log.info("Acceso a cuenta del correo: " + correo);
+		
 		// Generamos el JWT del usuario.
 		String jsonWebToken = servicioSeguridad.generaTokenUsuario(correo, contrasenia);
 		String refreshJsonWebToken = servicioSeguridad.generaRefreshTokenUsuario(correo, contrasenia);
 
 		// Si el JWT es nulo, regresamos un bad request
-		if (jsonWebToken == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-		}
-
-		// Construimos el JSON que se regresará
+		if (jsonWebToken == null) 
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		
 		HashMap<String, String> json = new HashMap<>();
 
-		// Indicamos qué tipo de token es
 		json.put("type", "Bearer Token");
-
-		// Ponemos el refresh token
 		json.put("refresh-token", refreshJsonWebToken);
-
-		// Ponemos el JWT y lo regresamos
 		json.put("token", jsonWebToken);
 
 		return ResponseEntity.status(HttpStatus.OK).body(json);
@@ -99,7 +94,7 @@ public class CuentaRestController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Alumno registrado exitosamente"),
 			@ApiResponse(code = 404, message = "No hay alumno que agregar"),
 			@ApiResponse(code = 500, message = "Error en el servidor") })
-	@PostMapping(path = "/registro", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/cuenta/registro", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AlumnoDto> create(@RequestBody AlumnoDto nuevoAlumnoDto) {
 
 		log.info("Empezando HU-01");
@@ -131,24 +126,17 @@ public class CuentaRestController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Se obtuvo el alumno exitosamente"),
 			@ApiResponse(code = 404, message = "No existe el alumno"),
 			@ApiResponse(code = 500, message = "Error en el servidor") })
-	@GetMapping(path = "/perfil", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/cuenta/perfil", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> retrieveAll(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = ServicioSeguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
 
 		try {
 
-			// Revisamos si es un JWT válido para esta petición, quitamos la parte de bearer
-			// del header para tener solo el JWT
 			if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
 
-				// Obtenemos el UUID que viene en el JWT, quitamos la parte de bearer del header
-				// para tener solo el JWT
 				Long idAlumno = servicioSeguridad.obtenUuidDeJwt(authorization.replace("Bearer ", ""));
 
-				// Comparamos el UUID solicitado al controlador con el que viene en el token
-				// solo aceptamos peticiones para el usuario del token, si esta UUID
-				// es la misma y el usuario existe, regresamos el usuario
-				return ResponseEntity.status(HttpStatus.CREATED)
+				return ResponseEntity.status(HttpStatus.OK)
 						.body(AlumnoDto.creaAlumnoDto(servicioAlumno.obtenerAlumnoPorId(idAlumno).get()));
 
 			}
@@ -172,28 +160,22 @@ public class CuentaRestController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Token refrescado exitosamente"),
 			@ApiResponse(code = 404, message = "No se pudo refrescar el token"),
 			@ApiResponse(code = 500, message = "Error en el servidor") })
-	@PostMapping(path = "/refresh", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/cuenta/refresca", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, String>> refresh(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = ServicioSeguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
 			@ApiParam(value = "X-Refresh-Token", required = true) @RequestHeader(name = "X-Refresh-Token", required = true) UUID refreshToken) {
 
 		// Generamos el JWT del usuario
 		String jwt = servicioSeguridad.refrescaJwt(authorization.replace("Bearer ", ""), refreshToken);
 
-		// Revisamos que tenga el
-
-		// Si el JWT es nulo, regresamos un bad request
 		if (jwt == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
 		// Construimos el JSON que se regresará
 		HashMap<String, String> json = new HashMap<>();
 
-		// Indicamos qué tipo de token es
 		json.put("type", "Bearer Token");
-
-		// Ponemos el token y lo regresamos
 		json.put("token", jwt);
 
 		return ResponseEntity.status(HttpStatus.OK).body(json);

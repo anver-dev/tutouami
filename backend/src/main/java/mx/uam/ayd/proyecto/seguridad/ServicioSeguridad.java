@@ -18,6 +18,11 @@ import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.RefreshToken;
 
+/**
+ * Servicio de seguridad
+ * @author anver
+ *
+ */
 @Service
 public class ServicioSeguridad {
 	
@@ -33,14 +38,12 @@ public class ServicioSeguridad {
 	@Autowired
 	private RefreshTokenRepository refreshTokenRepository;
 
-	public static final String HEADER_AUTORIZACION = "Bearer aaaaaaa.bbbbbbb.ccccccc";
 
 	public String generaTokenUsuario(String correo, String contrasenia) {
 		Optional<Alumno> alumnoABuscar = servicioAlumno.obtenerAlumnoPorCorreoYContrasenia(correo, contrasenia);
 
-		if (alumnoABuscar.isEmpty()) {
+		if (!alumnoABuscar.isPresent()) 
 			return null;
-		}
 
 		Alumno alumno = alumnoABuscar.get();
 
