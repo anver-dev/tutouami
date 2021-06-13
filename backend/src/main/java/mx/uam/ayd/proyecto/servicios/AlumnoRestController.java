@@ -1,6 +1,9 @@
 package mx.uam.ayd.proyecto.servicios;
 
+
 import java.util.Optional;
+
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -8,11 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +36,17 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import mx.uam.ayd.proyecto.config.Seguridad;
 import mx.uam.ayd.proyecto.dto.AlumnoDto;
+
+import mx.uam.ayd.proyecto.dto.AsesoriaDto;
+import mx.uam.ayd.proyecto.dto.MateriaDto;
 import mx.uam.ayd.proyecto.negocio.ServicioAlumno;
+
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.seguridad.ServicioSeguridad;
+
+import mx.uam.ayd.proyecto.negocio.ServicioMateria;
+
+
 
 /**
  * Restcontroller para entidad alumno
@@ -48,6 +65,56 @@ public class AlumnoRestController {
 
 	@Autowired
 	private ServicioSeguridad servicioSeguridad;
+
+ 
+	
+	/**
+     * Permite recuperar todos los alumnos
+     * 
+     * @return
+     */
+    @GetMapping(path = "/alumnos", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <List<AlumnoDto>> retrieveAll() {
+        
+    	log.info("Se consulta endpoint /alumnos");
+        List <AlumnoDto> alumnos =  servicioAlumno.recuperaAlumnos();
+        
+        return ResponseEntity.status(HttpStatus.OK).body(alumnos);
+        
+    }
+    
+    /**
+	 * Método que permite eliminar a un usuario
+	 * Mediante el id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@ApiOperation(value = "Elimina alumno", notes = "Elimina a un alumno mediante su ID")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Alumno eliminado exitosamente"),
+			@ApiResponse(code = 404, message = "No se encontro el alumno"),
+			@ApiResponse(code = 500, message = "Error al eliminar al alumno")})
+	@DeleteMapping(path = "/alumnos/{id}")
+	public ResponseEntity <?> delete(@PathVariable("id") @Valid Long id) {
+		
+		log.info("Buscando al alumno con id para eliminarlo: " + id);
+		
+		try {
+			AlumnoDto alumno = servicioAlumno.retrieve(id);
+			if (alumno != null) {
+				servicioAlumno.delete(id);
+				return ResponseEntity.status(HttpStatus.OK).body("Alumno eliminado correctamente");
+
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro alumno");
+		}
+		
+	}
+
 
 	/**
 	 * Metodo para actualizar un alumno
@@ -160,5 +227,6 @@ public class AlumnoRestController {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
 		}
 	}
+
 
 }

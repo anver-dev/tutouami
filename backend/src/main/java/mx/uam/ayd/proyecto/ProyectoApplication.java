@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 
+
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 
 
@@ -15,6 +16,7 @@ import mx.uam.ayd.proyecto.datos.CarreraRepository;
 import mx.uam.ayd.proyecto.datos.GrupoRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
+
 
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 
@@ -50,7 +52,6 @@ public class ProyectoApplication {
 	
 	@Autowired
 	MateriaRepository materiaRepository;
-	
 	
 	/**
 	 * 
@@ -111,6 +112,7 @@ public class ProyectoApplication {
 		materiaRepository.save(materiaIngenieria);
 		materiaRepository.save(materiaSistemas);
 		
+
 		//Se agrego un alumno de prueba
 		
 		Alumno alumno = new Alumno();
@@ -172,10 +174,14 @@ public class ProyectoApplication {
 
 		Alumno alu1 = new Alumno();
 		alu1.setNombre("Gonzalo");
+
 		alumnoRepository.save(alu1);
 		
 		Alumno alu2 = new Alumno();
 		alu2.setNombre("Victor");
+
+		alu2.setCarrera(carreraComputacion);
+
 		alumnoRepository.save(alu2);
 		
 		Grupo grupoAdmin = new Grupo();
