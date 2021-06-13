@@ -53,8 +53,8 @@ public class Alumno {
 	private String descripcion;
 	private String estado;
 	
-	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true )
-  private Carrera carrera;
+	@ManyToOne
+	private Carrera carrera;
 
 
 	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
