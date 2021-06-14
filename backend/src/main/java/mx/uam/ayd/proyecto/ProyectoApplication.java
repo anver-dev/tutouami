@@ -132,6 +132,9 @@ public class ProyectoApplication {
 		alumno.setCarrera(carreraElectronica);
 		alumnoRepository.save(alumno);
 		
+		carreraElectronica.addAlumno(alumno);
+		carreraRepository.save(carreraElectronica);
+		
 		Alumno alumno1 = new Alumno();
 		alumno1.setNombre("Victor");
 		alumno1.setApellidoPaterno("Sosa");
@@ -148,6 +151,9 @@ public class ProyectoApplication {
 		alumno1.setEstado("Libre");
 		alumno1.setCarrera(carreraComputacion);
 		alumnoRepository.save(alumno1);
+		
+		carreraComputacion.addAlumno(alumno1);
+		carreraRepository.save(carreraComputacion);
 		
 		//Se agrego una asesoria de prueba
 		/*
@@ -171,26 +177,6 @@ public class ProyectoApplication {
 		materiaSistemas.addAsesoria(asesoria);
 		materiaRepository.save(materiaSistemas);
 		*/
-
-		Alumno alu1 = new Alumno();
-		alu1.setNombre("Gonzalo");
-
-		alumnoRepository.save(alu1);
-		
-		Alumno alu2 = new Alumno();
-		alu2.setNombre("Victor");
-
-		alu2.setCarrera(carreraComputacion);
-
-		alumnoRepository.save(alu2);
-		
-		Grupo grupoAdmin = new Grupo();
-		grupoAdmin.setNombre("Administradores");
-		grupoRepository.save(grupoAdmin);
-		
-		Grupo grupoOps = new Grupo();
-		grupoOps.setNombre("Operadores");
-		grupoRepository.save(grupoOps);
 				
 	}
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class ServicioAsesoria {
 	
 	@Autowired 
 	private MateriaRepository materiaRepository;
+	
 
 	/**
 	 * Recuperar las asesorias de un usuario 
@@ -188,10 +191,19 @@ public class ServicioAsesoria {
 	 * @param idAsesoria el id de la asesoria
 	 * @param idAlumno el id del usuario
 	 */
-	public void eliminarAsesoria(Long idAsesoria, Long idAlumno) {
+	public boolean eliminarAsesoria(AsesoriaDto asesoria) {
+		Optional<Asesoria> optionalAsesoriaGuardada = asesoriaRepository.findById(asesoria.getIdAsesoria());
+		Asesoria asesoriaGuardada = optionalAsesoriaGuardada.get();
 		
-		log.info("Se va a eliminar la asesoria con id: "+ idAsesoria);
-		asesoriaRepository.deleteById(idAlumno);
+		log.info("Se va a eliminar la asesoria con id: "+ asesoriaGuardada.getIdAsesoria());
+		
+		if(asesoriaGuardada.getInscripcion() == null) {
+			asesoriaRepository.delete(asesoriaGuardada);
+			return true;
+		} else {
+			return false;
+		}
+		
 		
 	}
 
@@ -222,6 +234,68 @@ public class ServicioAsesoria {
 	public AsesoriaDto buscarID(Long idAsesoria) {
 		Optional<Asesoria> optAsesoria = asesoriaRepository.findById(idAsesoria);
 		return AsesoriaDto.creaAsesoriaDto(optAsesoria.get());
+	}
+
+	public Optional<AsesoriaDto> actualizarEstado(Long idAsesoria, Long idAlumno, @Valid String estado) {
+		Optional<Asesoria> optionalAsesoria = asesoriaRepository.findById(idAsesoria);
+		
+		if(!optionalAsesoria.isPresent())
+			return Optional.empty();
+		
+		Asesoria asesoria = optionalAsesoria.get();
+		Optional<Alumno> optionalAlumno = alumnoRepository.findById(idAlumno);
+		
+		if(!optionalAlumno.isPresent())
+			return Optional.empty();
+		
+		Alumno alumno = optionalAlumno.get(); 
+		Optional<Materia> optMateria = materiaRepository.findById(asesoria.getMateria().getIdMateria());
+		Materia materia = optMateria.get();
+		
+		asesoria.setEstado(estado);
+		
+		materia.addAsesoria(asesoria);
+		materiaRepository.save(materia);
+		
+		alumno.addAsesoria(asesoria);
+		alumnoRepository.save(alumno);
+		
+		return Optional.of(AsesoriaDto.creaAsesoriaDto(asesoria));
+		
+	
+	}
+
+	public Optional<Asesoria> obtenerAsesoriaPorId(Long idAsesoria) {
+		Optional<Asesoria> optionalAsesoria = asesoriaRepository.findById(idAsesoria);
+		
+		if(!optionalAsesoria.isPresent())
+			return Optional.empty();
+		
+		return optionalAsesoria;
+	}
+
+	public Asesoria guardarAsesoria(Asesoria asesoria) {
+		return asesoriaRepository.save(asesoria);
+		
+	}
+
+	public Optional<AsesoriaDto> actualizarPuntuacion(Long idAsesoria, @Valid Integer puntuacion) {
+		Optional<Asesoria> optionalAsesoria = asesoriaRepository.findById(idAsesoria);
+		
+		if(!optionalAsesoria.isPresent())
+			return Optional.empty();
+		
+		Asesoria asesoria = optionalAsesoria.get();
+		
+		int tmpTotalPuntuaciones = asesoria.getTotalPuntuaciones() + 1;
+		float nuevaPuntuacion = (asesoria.getPuntuacion() + puntuacion)/ tmpTotalPuntuaciones;
+		
+		asesoria.setTotalPuntuaciones(tmpTotalPuntuaciones);
+		asesoria.setPuntuacion(nuevaPuntuacion);
+		
+		asesoriaRepository.save(asesoria);
+		
+		return Optional.of(AsesoriaDto.creaAsesoriaDto(asesoria));
 	}
 	
 }

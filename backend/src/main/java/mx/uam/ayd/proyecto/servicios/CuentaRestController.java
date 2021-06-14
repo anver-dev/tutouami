@@ -101,7 +101,7 @@ public class CuentaRestController {
 		try {
 			AlumnoDto alumnoDto = servicioAlumno.agregarAlumno(nuevoAlumnoDto);
 
-			return ResponseEntity.status(HttpStatus.CREATED).body(alumnoDto);
+			return ResponseEntity.status(HttpStatus.OK).body(alumnoDto);
 		} catch (Exception ex) {
 			HttpStatus status;
 
@@ -158,6 +158,7 @@ public class CuentaRestController {
 	 */
 	@ApiOperation(value = "Refresca el token de un alumno logueado", notes = "Se actualiza el token del alumno")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Token refrescado exitosamente"),
+			@ApiResponse(code = 401, message = "No tienes los permisos necesarios"),
 			@ApiResponse(code = 404, message = "No se pudo refrescar el token"),
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@PostMapping(path = "/cuenta/refresca", produces = MediaType.APPLICATION_JSON_VALUE)

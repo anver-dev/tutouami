@@ -63,7 +63,7 @@ public class ServicioSeguridad {
 				.withIssuedAt(new Date(System.currentTimeMillis()))
 
 				// La fecha de caducidad del JWT
-				.withExpiresAt(new Date(System.currentTimeMillis() + 120000))
+				.withExpiresAt(new Date(System.currentTimeMillis() + 3600000))
 
 				// Al final lo firmamos con el algoritmo que nos provee el servicio de
 				// algoritmos
@@ -135,7 +135,7 @@ public class ServicioSeguridad {
 				.withIssuedAt(new Date(System.currentTimeMillis()))
 
 				// La fecha de caducidad del JWT
-				.withExpiresAt(new Date(System.currentTimeMillis() + 120000))
+				.withExpiresAt(new Date(System.currentTimeMillis() + 3600000))
 
 				// Al final lo firmamos con el algoritmo que nos provee el servicio de
 				// algoritmos

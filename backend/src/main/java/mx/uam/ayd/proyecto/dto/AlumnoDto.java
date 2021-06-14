@@ -8,15 +8,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 import mx.uam.ayd.proyecto.negocio.modelo.Comentario;
-import mx.uam.ayd.proyecto.negocio.modelo.Carrera;
 
 
 /**
@@ -76,9 +74,10 @@ public class AlumnoDto {
 	@NotNull
 	private long inscripcion;
 	
-	
+	@JsonIgnore
 	private List <Asesoria> asesorias = new ArrayList <> ();
 	
+	@JsonIgnore
 	private List <Comentario> comentarios = new ArrayList <> ();
 	
 	/**

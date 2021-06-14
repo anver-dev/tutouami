@@ -54,7 +54,7 @@ public class Asesoria {
 	
 
 	@ManyToOne
-  private Comentario comentario;
+	private Comentario comentario;
 	
 
 	@JsonIgnore
