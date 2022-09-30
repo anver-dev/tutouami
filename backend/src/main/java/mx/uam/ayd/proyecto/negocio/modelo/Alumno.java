@@ -2,6 +2,7 @@ package mx.uam.ayd.proyecto.negocio.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,9 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Entidad de negocio Alumno
@@ -25,7 +32,9 @@ import lombok.Data;
  */
 @Entity
 @Data
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Alumno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,26 +54,34 @@ public class Alumno {
 	private String estado;
 	
 	@ManyToOne
-    private Carrera carrera;
-		
-	
-	
-	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true )
+	private Carrera carrera;
+
+
+	@OneToMany(targetEntity = Asesoria.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
 	private final List<Asesoria> asesorias = new ArrayList<>();
-	
+
 	@OneToMany(targetEntity = Inscripcion.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
 	private final List<Inscripcion> inscripciones = new ArrayList<>();
+
 	
 	@OneToMany(targetEntity = Comentario.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "idAlumno")
 	@JsonIgnore
 	private final List<Comentario> comentarios = new ArrayList<>();
-	
-	
+
+	@Builder.Default
+	@OneToMany(targetEntity = RefreshToken.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "usuario")
+	@Fetch(value = FetchMode.SUBSELECT)
+	private final List<RefreshToken> refreshTokens = new ArrayList<>();
+
+	public boolean tieneElRefreshToken(RefreshToken refreshToken) {
+		return refreshTokens.contains(refreshToken);
+	}
 
 	/**
 	 * 
@@ -87,7 +104,7 @@ public class Alumno {
 		return asesorias.add(asesoria);
 
 	}
-	
+
 	/**
 	 * 
 	 * Permite agregar una inscripcion al alumno
@@ -109,7 +126,7 @@ public class Alumno {
 		return inscripciones.add(inscripcion);
 
 	}
-	
+
 	/**
 	 * 
 	 * Permite agregar una comentario al alumno
