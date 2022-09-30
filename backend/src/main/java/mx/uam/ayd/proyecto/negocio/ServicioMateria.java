@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
 import mx.uam.ayd.proyecto.dto.MateriaDto;
-import mx.uam.ayd.proyecto.dto.UsuarioDto;
 import mx.uam.ayd.proyecto.negocio.modelo.Materia;
-import mx.uam.ayd.proyecto.negocio.modelo.Usuario;
 
 @Service
 public class ServicioMateria {
