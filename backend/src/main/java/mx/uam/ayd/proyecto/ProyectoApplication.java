@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import mx.uam.ayd.proyecto.datos.AlumnoRepository;
 
+
 import mx.uam.ayd.proyecto.datos.AsesoriaRepository;
 
 
@@ -15,6 +16,7 @@ import mx.uam.ayd.proyecto.datos.CarreraRepository;
 import mx.uam.ayd.proyecto.datos.GrupoRepository;
 import mx.uam.ayd.proyecto.datos.MateriaRepository;
 import mx.uam.ayd.proyecto.negocio.modelo.Alumno;
+
 
 import mx.uam.ayd.proyecto.negocio.modelo.Asesoria;
 
@@ -50,9 +52,6 @@ public class ProyectoApplication {
 	
 	@Autowired
 	MateriaRepository materiaRepository;
-	
-	@Autowired
-	AlumnoRepository alumnoRepository;
 	
 	/**
 	 * 
@@ -95,6 +94,10 @@ public class ProyectoApplication {
 		carreraComputacion.setNombre("Computación");
 		carreraRepository.save(carreraComputacion);
 		
+		Carrera carreraElectronica = new Carrera();
+		carreraElectronica.setNombre("Electronica");
+		carreraRepository.save(carreraElectronica);
+		
 		//Vamos a crear tres materias
 		Materia materiaCompiladores = new Materia();
 		materiaCompiladores.setNombre("Compiladores");
@@ -109,6 +112,7 @@ public class ProyectoApplication {
 		materiaRepository.save(materiaIngenieria);
 		materiaRepository.save(materiaSistemas);
 		
+
 		//Se agrego un alumno de prueba
 		
 		Alumno alumno = new Alumno();
@@ -125,7 +129,11 @@ public class ProyectoApplication {
 		alumno.setTotalPuntuaciones(0);
 		alumno.setDescripcion("dos tres");
 		alumno.setEstado("Libre");
+		alumno.setCarrera(carreraElectronica);
 		alumnoRepository.save(alumno);
+		
+		carreraElectronica.addAlumno(alumno);
+		carreraRepository.save(carreraElectronica);
 		
 		Alumno alumno1 = new Alumno();
 		alumno1.setNombre("Victor");
@@ -141,7 +149,11 @@ public class ProyectoApplication {
 		alumno1.setTotalPuntuaciones(0);
 		alumno1.setDescripcion("dos tres");
 		alumno1.setEstado("Libre");
+		alumno1.setCarrera(carreraComputacion);
 		alumnoRepository.save(alumno1);
+		
+		carreraComputacion.addAlumno(alumno1);
+		carreraRepository.save(carreraComputacion);
 		
 		//Se agrego una asesoria de prueba
 		/*
@@ -165,22 +177,6 @@ public class ProyectoApplication {
 		materiaSistemas.addAsesoria(asesoria);
 		materiaRepository.save(materiaSistemas);
 		*/
-
-		Alumno alu1 = new Alumno();
-		alu1.setNombre("Gonzalo");
-		alumnoRepository.save(alu1);
-		
-		Alumno alu2 = new Alumno();
-		alu2.setNombre("Victor");
-		alumnoRepository.save(alu2);
-		
-		Grupo grupoAdmin = new Grupo();
-		grupoAdmin.setNombre("Administradores");
-		grupoRepository.save(grupoAdmin);
-		
-		Grupo grupoOps = new Grupo();
-		grupoOps.setNombre("Operadores");
-		grupoRepository.save(grupoOps);
 				
 	}
 }

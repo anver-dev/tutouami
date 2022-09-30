@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 /**
@@ -30,6 +32,7 @@ public class Carrera {
 	
 	@OneToMany(targetEntity = Alumno.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "idCarrera")
+	@JsonIgnore
 	private final List <Alumno> alumnos = new ArrayList <> ();
 	
 	/**

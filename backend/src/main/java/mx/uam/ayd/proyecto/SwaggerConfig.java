@@ -43,5 +43,7 @@ public class SwaggerConfig {
 		  new Contact("TutoUAMI", "Pronto...", "Pronto..."),
 		  "License of API", "API license URL", Collections.emptyList());
 	}
+
+
 }
 

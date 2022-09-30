@@ -33,14 +33,27 @@ public class AsesoriaDto {
 	@NotNull
 	private float costo;
 
+	@NotEmpty
+	private String url;
+	
 	@NotEmpty(message = "El campo no debe ser vacio")
 	private String ubicacion;
 	
+	@NotEmpty
+	private String estado;
+	
+	@NotNull
+	private float puntuacion;
+	
+	@NotNull
+	private int totalPuntuaciones;
+		
 	@NotNull
 	private long materia;
 	
 	@NotNull
 	private long alumno;
+
 
 	/**
 	 * Este método permite generar un DTO a partir de la entidad
@@ -65,8 +78,6 @@ public class AsesoriaDto {
 		dto.setTotalPuntuaciones(asesoria.getTotalPuntuaciones());
 		dto.setUrl(asesoria.getUrl());
 		dto.setEstado(asesoria.getEstado());
-		dto.setMateria(asesoria.getMateria().getIdMateria());
-		dto.setAlumno(asesoria.getIdAlumno());
 		dto.setMateria(asesoria.getMateria().getIdMateria());
 		dto.setAlumno(asesoria.getIdAlumno());
 		

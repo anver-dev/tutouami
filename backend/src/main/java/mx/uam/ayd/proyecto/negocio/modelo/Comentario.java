@@ -23,9 +23,15 @@ public class Comentario {
 	private String contenido;
 	private String fechaCreacion;
 	
+	private Long idAlumno;
+	private Long idAsesoria;
+	
 	@ManyToOne
     private Alumno alumno;
 	
 	@ManyToOne
     private Asesoria asesoria;
+	
+	
+	
 }
