@@ -23,7 +23,7 @@ public class RefreshToken {
 	private Long expireAt;	
 	
 	@ManyToOne
-	@JoinColumn(name = "usuario")
-	private Student alumno;
+	@JoinColumn(name = "user")
+	private Student student;
 
 }

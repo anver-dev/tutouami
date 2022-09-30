@@ -8,4 +8,5 @@ public interface IStudentService {
 	
 	public List<StudentDTO> findAll();
 	public StudentDTO findById(Long id);
+	public StudentDTO create(StudentDTO student);
 }

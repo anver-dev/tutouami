@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import mx.tutouami.config.Seguridad;
+import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.AdviceDTO;
 import mx.tutouami.model.dto.SubjectDTO;
 import mx.tutouami.security.ServicioSeguridad;
@@ -61,7 +61,7 @@ public class MateriaRestController {
 			@ApiResponse(code = 404, message = "No se encontro el alumno")})
     @GetMapping(path = "/materias", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <List<SubjectDTO>> retrieveAll(
-    		@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+    		@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
     	try {
 			if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
 
@@ -90,7 +90,7 @@ public class MateriaRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@GetMapping(path = "/materias/{idMateria}/asesorias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AdviceDTO>> retrieve(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
 			@PathVariable("idMateria") Long idMateria) {
 		log.info("Se van a obtener las asesorias de la materia con id " + idMateria);
 		if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {

@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import mx.tutouami.config.Seguridad;
+import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.security.ServicioSeguridad;
 import mx.tutouami.service.impl.StudentServiceImpl;
 
@@ -126,7 +126,7 @@ public class CuentaRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@GetMapping(path = "/cuenta/perfil", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> retrieveAll(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
 
 		try {
 
@@ -160,7 +160,7 @@ public class CuentaRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@PostMapping(path = "/cuenta/refresca", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, String>> refresh(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
 			@ApiParam(value = "X-Refresh-Token", required = true) @RequestHeader(name = "X-Refresh-Token", required = true) UUID refreshToken) {
 
 		// Generamos el JWT del usuario

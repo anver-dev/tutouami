@@ -51,6 +51,8 @@ public class Student {
 	private String secondLastName;
 
 	private Integer age;
+	
+	@Column(unique = true)
 	private String email;
 	private String phone;
 	private String cv;

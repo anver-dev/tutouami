@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import mx.tutouami.config.Seguridad;
+import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.AdviceDTO;
 import mx.tutouami.security.ServicioSeguridad;
 import mx.tutouami.service.impl.ServicioAsesoria;
@@ -59,7 +59,7 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 401, message = "No tienes los permisos necesarios") })
 	@GetMapping(path = "/asesorias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AdviceDTO>> retrieveAll(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
 
 		if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
 			log.info("Se consulta endpoint /asesorias");
@@ -85,7 +85,7 @@ public class AsesoriaRestController {
 			@ApiResponse(code = 500, message = "Error en el servidor") })
 	@PatchMapping(path = "/asesoria/{idAsesoria}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> update(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = Seguridad.HEADER_AUTORIZACION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
 			@PathVariable("idAsesoria") Long idAsesoria, @RequestBody @Valid Integer puntuacion) {
 
 		// Traza
