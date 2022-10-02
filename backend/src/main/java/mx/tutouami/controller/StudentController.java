@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +23,9 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import mx.tutouami.model.SecurityExamples;
+import mx.tutouami.model.dto.StatusDTO;
 import mx.tutouami.model.dto.StudentDTO;
-import mx.tutouami.security.ServicioSeguridad;
+import mx.tutouami.service.ISecurityService;
 import mx.tutouami.service.IStudentService;
 
 /**
@@ -42,9 +44,8 @@ public class StudentController {
 	@Autowired
 	private IStudentService studentService;
 
-	@SuppressWarnings("unused")
 	@Autowired
-	private ServicioSeguridad servicioSeguridad;
+	private ISecurityService securityService;
 
 	@ApiOperation(value = "Get all", notes = "Get all students")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Students found successful"),
@@ -53,8 +54,9 @@ public class StudentController {
 			@ApiResponse(code = 500, message = "Server error") })
 	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StudentDTO>> getAll(
-			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = false) @RequestHeader(value = "Authorization", name = "Authorization", required = false) String authorization) {
-		// servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""));
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) 
+			@RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+		securityService.jwtValidation(authorization);
 		return ResponseEntity.status(HttpStatus.OK).body(studentService.findAll());
 
 	}
@@ -66,8 +68,9 @@ public class StudentController {
 			@ApiResponse(code = 500, message = "Server error") })
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StudentDTO> getById(@PathVariable("id") Long id,
-			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = false) @RequestHeader(value = "Authorization", name = "Authorization", required = false) String authorization) {
-		// servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""));
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) 
+			@RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+		securityService.jwtValidation(authorization);
 		return ResponseEntity.status(HttpStatus.OK).body(studentService.findById(id));
 	}
 
@@ -76,8 +79,22 @@ public class StudentController {
 			@ApiResponse(code = 401, message = "No authorized"), @ApiResponse(code = 500, message = "Server error") })
 	@PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StudentDTO> create(@RequestBody StudentDTO student,
-			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = false) @RequestHeader(value = "Authorization", name = "Authorization", required = false) String authorization) {
-		// servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""));
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) 
+			@RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+		securityService.jwtValidation(authorization);
 		return ResponseEntity.status(HttpStatus.OK).body(studentService.create(student));
+	}
+
+	@ApiOperation(value = "Update student status", notes = "Update status of the student")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Status updated successful"),
+			@ApiResponse(code = 401, message = "No authorized"),
+			@ApiResponse(code = 404, message = "Student not found"),
+			@ApiResponse(code = 500, message = "Server error") })
+	@PatchMapping(path = "/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StudentDTO> updateStatus(@PathVariable("id") Long id, @RequestBody StatusDTO status,
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) 
+			@RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
+		securityService.jwtValidation(authorization);
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.updateStatus(id, status));
 	}
 }

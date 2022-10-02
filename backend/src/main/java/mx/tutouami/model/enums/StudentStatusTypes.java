@@ -1,5 +1,8 @@
 package mx.tutouami.model.enums;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel
 public enum StudentStatusTypes {
 	
 	AVAILABLE("DISPONIBLE"),

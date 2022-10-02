@@ -7,22 +7,18 @@ import org.springframework.stereotype.Service;
 import com.auth0.jwt.algorithms.Algorithm;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Getter
+@Slf4j
 public class ServicioAlgoritmo {
 	
 	private Algorithm algoritmo;
 	
-	private String secret;
-	
 	@Autowired
 	public ServicioAlgoritmo(@Value("${security.secret}") String secret) {
-		this.secret = secret;
-	}
-	
-	public ServicioAlgoritmo() {
+		log.info("SECRET:: {} ", secret);
 		this.algoritmo = Algorithm.HMAC256(secret);
 	}
-
 }

@@ -6,6 +6,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import org.mockito.stubbing.Answer;
 
+import mx.tutouami.entity.Group;
+import mx.tutouami.entity.Account;
+import mx.tutouami.repository.GrupoRepository;
+import mx.tutouami.repository.AccountRepository;
+import mx.tutouami.service.impl.AccountServiceImpl;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,11 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import mx.uam.ayd.proyecto.datos.GrupoRepository;
-import mx.uam.ayd.proyecto.datos.UsuarioRepository;
-import mx.uam.ayd.proyecto.negocio.modelo.Grupo;
-import mx.uam.ayd.proyecto.negocio.modelo.Usuario;
 
 /**
  * 
@@ -36,7 +37,7 @@ class ServicioUsuarioTest {
 	// Al usar la anotación @Mock, el framework Mockito crea un sustituto
 	// de la clase que regresa valores por default
 	@Mock
-	private UsuarioRepository usuarioRepository;
+	private AccountRepository usuarioRepository;
 	
 	@Mock
 	private GrupoRepository grupoRepository;
@@ -45,7 +46,7 @@ class ServicioUsuarioTest {
 	// probar para que no haya nullPointerException por que las dependencias
 	// no están satisfechas en tiempo de pruebas
 	@InjectMocks
-	private ServicioUsuario servicio;
+	private AccountServiceImpl servicio;
 
 	
 	@BeforeEach
@@ -70,18 +71,14 @@ class ServicioUsuarioTest {
 		//assertTrue(usuarios.isEmpty());
 
 		// Prueba 2: corroborar que regresa una lista con usuarios
-		LinkedList <Usuario> lista = new LinkedList <> ();
+		LinkedList <Account> lista = new LinkedList <> ();
 
 		// Tengo que crear un Iterable <Usuario> para que el método 
 		// usuarioRepository.findAll() no me regrese una lista vacía
 		// cuando lo invoco
-		Usuario usuario1 = new Usuario();
-		usuario1.setNombre("Juan");
-		usuario1.setApellido("Perez");
+		Account usuario1 = new Account();
 
-		Usuario usuario2 = new Usuario();
-		usuario2.setNombre("María");
-		usuario2.setApellido("Ramírez");
+		Account usuario2 = new Account();
 		
 		lista.add(usuario1);
 		lista.add(usuario2);
@@ -108,23 +105,21 @@ class ServicioUsuarioTest {
 		String apellido = "Perez";
 		String idGrupo = "CK53";
 		
-		Grupo grupo = new Grupo();
+		Group grupo = new Group();
 		grupo.setNombre(idGrupo);
 		
 
 		
 		when(grupoRepository.findByNombre(idGrupo)).thenReturn(grupo);
 		
-		when(usuarioRepository.save(any(Usuario.class))).thenAnswer(new Answer <Usuario> () {
+		when(usuarioRepository.save(any(Account.class))).thenAnswer(new Answer <Account> () {
 
 			@Override
-			public Usuario answer(InvocationOnMock invocation) throws Throwable {
+			public Account answer(InvocationOnMock invocation) throws Throwable {
 				
 
-				Usuario usuario = invocation.getArgument(0);
+				Account usuario = invocation.getArgument(0);
 				
-				assertEquals(nombre,usuario.getNombre());
-				assertEquals(apellido,usuario.getApellido());
 				//System.out.println("Guardando usuario: "+usuario);
 				
 				return usuario;

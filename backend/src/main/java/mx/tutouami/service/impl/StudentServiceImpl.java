@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.entity.Student;
-import mx.tutouami.exceptions.EmailAlreadyExistsException;
+import mx.tutouami.exceptions.EnrolmentAlreadyExistsException;
 import mx.tutouami.exceptions.NotFoundException;
+import mx.tutouami.model.dto.StatusDTO;
 import mx.tutouami.model.dto.StudentDTO;
 import mx.tutouami.model.enums.StudentStatusTypes;
 import mx.tutouami.repository.StudentRepository;
@@ -38,9 +39,9 @@ public class StudentServiceImpl implements IStudentService {
 	@Override
 	public StudentDTO create(StudentDTO studentDTO) {
 		validate(studentDTO);
-		
+
 		Student studentToCreate = Student.builder().age(studentDTO.getAge()).cv(studentDTO.getCv())
-				.degree(studentDTO.getDegree()).description(studentDTO.getDescription()).email(studentDTO.getEmail())
+				.degree(studentDTO.getDegree()).description(studentDTO.getDescription())
 				.lastName(studentDTO.getLastName()).name(studentDTO.getName()).phone(studentDTO.getPhone()).score(0.00F)
 				.secondLastName(studentDTO.getSecondLastName()).status(StudentStatusTypes.AVAILABLE.getValue())
 				.trimester(studentDTO.getTrimester()).build();
@@ -48,10 +49,20 @@ public class StudentServiceImpl implements IStudentService {
 		return StudentDTO.generate(studentRepository.save(studentToCreate));
 	}
 
+	@Override
+	public StudentDTO updateStatus(Long id, StatusDTO status) {
+		Student student = studentRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException(String.format("Student by id: %d not found", id)));
+
+		student.setStatus(status.getStatus().getValue());
+
+		return StudentDTO.generate(studentRepository.save(student));
+	}
+
 	private void validate(StudentDTO studentDTO) {
-		studentRepository.findByEmail(studentDTO.getEmail()).ifPresent(student -> {
-			throw new EmailAlreadyExistsException(
-					String.format("El email %s ya está registrado", studentDTO.getEmail()), student.getEmail(),
+		studentRepository.findByEnrolment(studentDTO.getEnrolment()).ifPresent(student -> {
+			throw new EnrolmentAlreadyExistsException(
+					String.format("La matricula %s ya está registrado", studentDTO.getEnrolment()), student.getEnrolment(),
 					student.getId());
 		});
 	}

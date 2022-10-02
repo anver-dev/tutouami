@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.model.dto.StudentDTO;
 import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.InscriptionDTO;
-import mx.tutouami.security.ServicioSeguridad;
+import mx.tutouami.service.impl.SecurityServiceImpl;
 import mx.tutouami.service.impl.ServicioInscripcion;
 
 @RestController
@@ -38,7 +38,7 @@ public class InscripcionRestController {
 	
 	
 	@Autowired
-	private ServicioSeguridad servicioSeguridad;
+	private SecurityServiceImpl servicioSeguridad;
 	
 	
 }

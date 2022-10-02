@@ -1,6 +1,7 @@
 package mx.tutouami.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -42,6 +46,9 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_student")
 	private Long id;
+	
+	private Integer enrolment;
+	
 	private String name;
 
 	@Column(name = "last_name")
@@ -51,9 +58,6 @@ public class Student {
 	private String secondLastName;
 
 	private Integer age;
-	
-	@Column(unique = true)
-	private String email;
 	private String phone;
 	private String cv;
 	private Integer trimester;
@@ -64,9 +68,16 @@ public class Student {
 
 	private String description;
 	private String status;
+	
+	@Column(name = "create_at", updatable = false)
+	@Temporal(TemporalType.DATE)
+	private Date createAt;
 
 	@ManyToOne
 	private Degree degree;
+	
+	@OneToOne
+	private Account account;
 
 	@OneToMany(targetEntity = Advice.class, fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinColumn(name = "id_student")

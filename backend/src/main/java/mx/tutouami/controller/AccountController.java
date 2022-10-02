@@ -22,64 +22,42 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.model.SecurityExamples;
-import mx.tutouami.security.ServicioSeguridad;
+import mx.tutouami.model.dto.AccountDTO;
+import mx.tutouami.service.IAccountService;
+import mx.tutouami.service.impl.SecurityServiceImpl;
 import mx.tutouami.service.impl.StudentServiceImpl;
 
 /**
- * Controlador de endpoint de cuenta.
+ * Account controller.
  * 
  * @author anver
  *
  */
-@Slf4j
 @RestController
-@RequestMapping("/v1")
-@Api(value = "Cuenta")
+@RequestMapping("/v1/account")
+@Api(value = "Account")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
-public class CuentaRestController {
+public class AccountController {
 
 	@Autowired
-	private ServicioSeguridad servicioSeguridad;
+	private SecurityServiceImpl servicioSeguridad;
 
 	@Autowired
 	private StudentServiceImpl servicioAlumno;
+	
+	@Autowired
+	private IAccountService accountService;
 
-	/**
-	 * Metodo para iniciar sesion
-	 * 
-	 * @param correo      correo del alumno que desea iniciar sesión.
-	 * @param contrasenia del alumno que desea iniciar sesión.
-	 * @return
-	 */
-	@ApiOperation(value = "Permite el inicio de sesion del alumno", notes = "El alumno inicia sesión")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Alumno logueado exitosamente"),
-			@ApiResponse(code = 404, message = "El alumno no pudo loguearse"),
+	@ApiOperation(value = "Allow user login", notes = "User login")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "User login succesfull"),
+			@ApiResponse(code = 404, message = "User not found"),
 			@ApiResponse(code = 500, message = "Error en el servidor") })
-	@PostMapping(path = "/cuenta/acceso", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Map<String, String>> login(
-			@ApiParam(value = "Correo", required = true) @RequestHeader(name = "Correo", required = true) String correo,
-			@ApiParam(value = "Contrasenia", required = true) @RequestHeader(name = "Contrasenia", required = true) String contrasenia) {
-
-		log.info("Acceso a cuenta del correo: " + correo);
-
-		// Generamos el JWT del usuario.
-		String jsonWebToken = servicioSeguridad.generaTokenUsuario(correo, contrasenia);
-		String refreshJsonWebToken = servicioSeguridad.generaRefreshTokenUsuario(correo, contrasenia);
-
-		// Si el JWT es nulo, regresamos un bad request
-		if (jsonWebToken == null)
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-		HashMap<String, String> json = new HashMap<>();
-
-		json.put("type", "Bearer Token");
-		json.put("refresh-token", refreshJsonWebToken);
-		json.put("token", jsonWebToken);
-
-		return ResponseEntity.status(HttpStatus.OK).body(json);
-
+	@PostMapping(path = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AccountDTO> login(
+			@ApiParam(value = "Email", required = true) @RequestHeader(name = "Email", required = true) String email,
+			@ApiParam(value = "Password", required = true) @RequestHeader(name = "Password", required = true) String password) {
+		return ResponseEntity.status(HttpStatus.OK).body(accountService.validateLogin(email, password));
 	}
 
 	/**
@@ -130,16 +108,12 @@ public class CuentaRestController {
 
 		try {
 
-			if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
+			servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
 
-				Long idAlumno = servicioSeguridad.obtenUuidDeJwt(authorization.replace("Bearer ", ""));
+				Long idAlumno = servicioSeguridad.getUuidDeJwt(authorization.replace("Bearer ", ""));
 
 				return ResponseEntity.status(HttpStatus.OK).body(servicioAlumno.findById(idAlumno));
 
-			}
-
-			// Cualquier otro caso, regresamos un no autorizado
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
@@ -164,7 +138,7 @@ public class CuentaRestController {
 			@ApiParam(value = "X-Refresh-Token", required = true) @RequestHeader(name = "X-Refresh-Token", required = true) UUID refreshToken) {
 
 		// Generamos el JWT del usuario
-		String jwt = servicioSeguridad.refrescaJwt(authorization.replace("Bearer ", ""), refreshToken);
+		String jwt = servicioSeguridad.refreshJwt(authorization.replace("Bearer ", ""), refreshToken);
 
 		if (jwt == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

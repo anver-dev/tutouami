@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.AdviceDTO;
 import mx.tutouami.model.dto.SubjectDTO;
-import mx.tutouami.security.ServicioSeguridad;
+import mx.tutouami.service.impl.SecurityServiceImpl;
 import mx.tutouami.service.impl.ServicioAsesoria;
 import mx.tutouami.service.impl.ServicioMateria;
 
@@ -45,7 +45,7 @@ public class MateriaRestController {
     private ServicioMateria servicioMateria;
 	
 	@Autowired
-	private ServicioSeguridad servicioSeguridad;
+	private SecurityServiceImpl servicioSeguridad;
 	
 	@Autowired
 	private ServicioAsesoria servicioAsesoria;
@@ -63,15 +63,15 @@ public class MateriaRestController {
     public ResponseEntity <List<SubjectDTO>> retrieveAll(
     		@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
     	try {
-			if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
+			servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
 
 				log.info("Se consulta endpoint /materias");
 		        List <SubjectDTO> materias =  servicioMateria.recuperaMaterias();
 		        
 		        return ResponseEntity.status(HttpStatus.OK).body(materias);
 
-			}
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		
+			//return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
@@ -93,12 +93,12 @@ public class MateriaRestController {
 			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
 			@PathVariable("idMateria") Long idMateria) {
 		log.info("Se van a obtener las asesorias de la materia con id " + idMateria);
-		if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
+		servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
 			List<AdviceDTO> asesoriasDto = servicioAsesoria.recuperaAsesoriasMateria(idMateria);
 			return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);
-		}
 		
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		
+		//return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 	}
     
 }

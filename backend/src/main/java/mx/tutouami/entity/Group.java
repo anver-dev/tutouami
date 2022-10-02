@@ -28,9 +28,9 @@ public class Group {
 
 	private String nombre;
 	
-	@OneToMany(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(targetEntity = Account.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "idGrupo")
-	private final List <User> usuarios = new ArrayList <> ();
+	private final List <Account> usuarios = new ArrayList <> ();
 	
 	/**
 	 * 
@@ -41,7 +41,7 @@ public class Group {
 	 * @return true si el usuario se agregó correctamente, false si no
 	 * @throws IllegalArgumentException si el usuario es nulo
 	 */
-	public boolean addUsuario(User usuario) {
+	public boolean addUsuario(Account usuario) {
 
 		if(usuario == null) {
 			throw new IllegalArgumentException("El usuario no puede ser null");

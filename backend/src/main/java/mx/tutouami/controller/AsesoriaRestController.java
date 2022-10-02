@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.AdviceDTO;
-import mx.tutouami.security.ServicioSeguridad;
+import mx.tutouami.service.impl.SecurityServiceImpl;
 import mx.tutouami.service.impl.ServicioAsesoria;
 
 /**
@@ -47,7 +47,7 @@ public class AsesoriaRestController {
 	private ServicioAsesoria servicioAsesoria;
 
 	@Autowired
-	private ServicioSeguridad servicioSeguridad;
+	private SecurityServiceImpl servicioSeguridad;
 
 	/**
 	 * Permite recuperar todos las asesorias
@@ -61,14 +61,11 @@ public class AsesoriaRestController {
 	public ResponseEntity<List<AdviceDTO>> retrieveAll(
 			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
 
-		if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
+		servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
 			log.info("Se consulta endpoint /asesorias");
 			List<AdviceDTO> asesorias = servicioAsesoria.recuperaAsesorias();
 
 			return ResponseEntity.status(HttpStatus.OK).body(asesorias);
-		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
 	}
 
 	/**
@@ -92,16 +89,13 @@ public class AsesoriaRestController {
 		log.info("Actualizando puntuacion la asesoria con id " + idAsesoria);
 
 		try {
-			if (servicioSeguridad.jwtEsValido(authorization.replace("Bearer ", ""))) {
+			servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
 				Optional<AdviceDTO> optionalAsesoria = servicioAsesoria.actualizarPuntuacion(idAsesoria, puntuacion);
 
 				if (!optionalAsesoria.isPresent())
 					ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la asesoria");
 
 				return ResponseEntity.status(HttpStatus.CREATED).body(optionalAsesoria);
-			}
-
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		} catch (Exception ex) {
 
 			HttpStatus status;

@@ -6,28 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import mx.tutouami.entity.Account;
 import mx.tutouami.entity.Advice;
 import mx.tutouami.entity.Degree;
 import mx.tutouami.entity.Group;
 import mx.tutouami.entity.Student;
 import mx.tutouami.entity.Subject;
 import mx.tutouami.repository.StudentRepository;
+import mx.tutouami.repository.AccountRepository;
 import mx.tutouami.repository.AsesoriaRepository;
 import mx.tutouami.repository.CarreraRepository;
 import mx.tutouami.repository.GrupoRepository;
 import mx.tutouami.repository.MateriaRepository;
 
-/**
- * 
- * Clase principal que arranca la aplicación 
- * construida usando el principio de 
- * inversión de control
- * 
- * Ejemplo de cambio en Rama
- * 
- * @author humbertocervantes
- *
- */
 @SpringBootApplication
 public class ProyectoApplication {
 	
@@ -46,11 +37,9 @@ public class ProyectoApplication {
 	@Autowired
 	MateriaRepository materiaRepository;
 	
-	/**
-	 * 
-	 * Método principal
-	 * 
-	 */
+	@Autowired
+	AccountRepository accountRepository;
+	
 	public static void main(String[] args) {
 		
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(ProyectoApplication.class);
@@ -60,31 +49,13 @@ public class ProyectoApplication {
 		builder.run(args);
 	}
 
-	/**
-	 * Metodo que arranca la aplicacion
-	 * inicializa la bd y arranca el controlador
-	 * otro comentario
-	 */
 	@PostConstruct
 	public void inicia() {
-		
 		inicializaBD();
-		
-		//controlPrincipal.inicia();
 	}
-	/*
-	 * Se hizo  la rama HU14F
-	 * **/
 	
-	/**
-	 * 
-	 * Inicializa la BD con datos
-	 * 
-	 * 
-	 */
 	public void inicializaBD() {
 		
-		// Vamos a crear una carrera
 		Degree carreraComputacion = new Degree();
 		carreraComputacion.setNombre("Computación");
 		carreraRepository.save(carreraComputacion);
@@ -93,7 +64,6 @@ public class ProyectoApplication {
 		carreraElectronica.setNombre("Electronica");
 		carreraRepository.save(carreraElectronica);
 		
-		//Vamos a crear tres materias
 		Subject materiaCompiladores = new Subject();
 		materiaCompiladores.setNombre("Compiladores");
 		
@@ -107,14 +77,16 @@ public class ProyectoApplication {
 		materiaRepository.save(materiaIngenieria);
 		materiaRepository.save(materiaSistemas);
 		
-
-		//Se agrego un alumno de prueba
+		Account account = accountRepository.save(Account.builder()
+				.email("manuel@gmail.com")
+				.password("12345")
+				.build());
+		
 		Student student = studentRepository.save(Student.builder()
 				.name("Victor")
 				.lastName("Sosa")
 				.secondLastName("Pina")
 				.age(21)
-				.email("manuel@gmail.com")
 				.phone("123456789")
 				.cv("CV DESCRIPTION")
 				.trimester(9)
@@ -123,34 +95,10 @@ public class ProyectoApplication {
 				.description("DESCRIPTION")
 				.status("LIBRE")
 				.degree(carreraElectronica)
+				.account(account)
 				.build());
 		
 		carreraElectronica.addAlumno(student);
 		carreraRepository.save(carreraElectronica);
-		
-		
-		//Se agrego una asesoria de prueba
-		/*
-		Asesoria asesoria = new Asesoria();
-		asesoria.setDia("04/07/2021");
-		asesoria.setHoraInicio("12");
-		asesoria.setHoraTermino("2");
-		asesoria.setPuntuacion(3);
-		asesoria.setTotalPuntuaciones(4);
-		asesoria.setDetalles("Bueno");
-		asesoria.setTipo("Alumno");
-		asesoria.setUbicacion("AT-309");
-		asesoria.setCosto(20);
-		asesoria.setUrl("www.uam.com");
-		asesoria.setEstado("Libre");
-		asesoriaRepository.save(asesoria);
-		
-		alumno.addAsesoria(asesoria);
-		alumnoRepository.save(alumno);
-		
-		materiaSistemas.addAsesoria(asesoria);
-		materiaRepository.save(materiaSistemas);
-		*/
-				
 	}
 }

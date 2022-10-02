@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import mx.tutouami.entity.Group;
+import mx.tutouami.entity.Account;
+
 /**
  * 
  * Prueba unitaria de la entidad Grupo
@@ -16,7 +19,7 @@ import org.junit.jupiter.api.Test;
  */
 class GrupoTest {
 
-	private Grupo grupo = new Grupo(); // Este es el elemento que probamos
+	private Group grupo = new Group(); // Este es el elemento que probamos
 
 	
 	@BeforeEach
@@ -42,12 +45,8 @@ class GrupoTest {
 	void testAddUsuario() {
 		
 		// Precondiciones específicas para este caso de prueba
-		Usuario usuario;
-		usuario = new Usuario();
-		usuario.setNombre("Juan");
-		usuario.setApellido("Perez");
-		usuario.setEdad(20);
-
+		Account usuario;
+		usuario = new Account();
 		
 		
 		// Caso de prueba 1: Corroborar que addUsuario funciona correctamente si no hay usuarios en el grupo

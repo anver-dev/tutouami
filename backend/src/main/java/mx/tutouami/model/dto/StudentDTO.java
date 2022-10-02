@@ -3,7 +3,6 @@ package mx.tutouami.model.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -27,6 +26,9 @@ import mx.tutouami.entity.Student;
 public class StudentDTO {
 
 	private Long id;
+	
+	@NotEmpty
+	private Integer enrolment;
 
 	@NotEmpty
 	private String name;
@@ -39,10 +41,6 @@ public class StudentDTO {
 
 	@Positive
 	private Integer age;
-
-	@Email
-	@NotEmpty
-	private String email;
 
 	@NotEmpty
 	private String phone;
@@ -81,9 +79,9 @@ public class StudentDTO {
 	public static StudentDTO generate(Student student) {
 		return StudentDTO.builder().advices(student.getAdvices()).age(student.getAge()).comments(student.getComments())
 				.cv(student.getCv()).degree(student.getDegree()).description(student.getDescription())
-				.email(student.getEmail()).id(student.getId()).totalInscriptions(student.getInscriptions().size())
-				.lastName(student.getLastName()).name(student.getName()).phone(student.getPhone())
-				.score(student.getScore()).secondLastName(student.getSecondLastName()).status(student.getStatus())
+				.id(student.getId()).totalInscriptions(student.getInscriptions().size()).lastName(student.getLastName())
+				.name(student.getName()).phone(student.getPhone()).score(student.getScore())
+				.secondLastName(student.getSecondLastName()).status(student.getStatus())
 				.totalScore(student.getTotalScore() != null ? student.getTotalScore() : 0)
 				.trimester(student.getTrimester()).build();
 	}
