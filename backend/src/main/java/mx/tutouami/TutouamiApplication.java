@@ -7,20 +7,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import mx.tutouami.entity.Account;
-import mx.tutouami.entity.Advice;
 import mx.tutouami.entity.Degree;
-import mx.tutouami.entity.Group;
 import mx.tutouami.entity.Student;
 import mx.tutouami.entity.Subject;
-import mx.tutouami.repository.StudentRepository;
 import mx.tutouami.repository.AccountRepository;
-import mx.tutouami.repository.AsesoriaRepository;
+import mx.tutouami.repository.AdviceRepository;
 import mx.tutouami.repository.CarreraRepository;
 import mx.tutouami.repository.GrupoRepository;
 import mx.tutouami.repository.MateriaRepository;
+import mx.tutouami.repository.StudentRepository;
 
 @SpringBootApplication
-public class ProyectoApplication {
+public class TutouamiApplication {
 	
 	@Autowired
 	GrupoRepository grupoRepository;
@@ -29,7 +27,7 @@ public class ProyectoApplication {
 	CarreraRepository carreraRepository;
 	
 	@Autowired
-	AsesoriaRepository asesoriaRepository;
+	AdviceRepository asesoriaRepository;
 	
 	@Autowired
 	StudentRepository  studentRepository;
@@ -42,7 +40,7 @@ public class ProyectoApplication {
 	
 	public static void main(String[] args) {
 		
-		SpringApplicationBuilder builder = new SpringApplicationBuilder(ProyectoApplication.class);
+		SpringApplicationBuilder builder = new SpringApplicationBuilder(TutouamiApplication.class);
 
 		builder.headless(false);
 

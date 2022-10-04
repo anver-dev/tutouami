@@ -9,10 +9,10 @@
 		<version>2.3.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>mx.uam.ayd</groupId>
-	<artifactId>proyecto</artifactId>
+	<groupId>mx.tutouami</groupId>
+	<artifactId>tutouami</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>proyecto</name>
+	<name>tutouami</name>
 	<description>Arquitectura de base para el proyecto</description>
 
 	<properties>
@@ -151,5 +151,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

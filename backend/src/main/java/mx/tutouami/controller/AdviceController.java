@@ -41,7 +41,7 @@ import mx.tutouami.service.impl.ServicioAsesoria;
 @RequestMapping("/v1") 
 @Api(value = "Asesoria")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE })
-public class AsesoriaRestController {
+public class AdviceController {
 
 	@Autowired
 	private ServicioAsesoria servicioAsesoria;

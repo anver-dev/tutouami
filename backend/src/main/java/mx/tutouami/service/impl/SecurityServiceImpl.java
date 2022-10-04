@@ -11,18 +11,19 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import lombok.extern.slf4j.Slf4j;
+import mx.tutouami.entity.RefreshToken;
 import mx.tutouami.entity.Student;
-import mx.tutouami.exceptions.NotAuthorizedException;
+import mx.tutouami.exceptions.UnauthorizedException;
 import mx.tutouami.repository.RefreshTokenRepository;
-import mx.tutouami.security.ServicioAlgoritmo;
+import mx.tutouami.security.AlgorithmUtil;
 import mx.tutouami.service.ISecurityService;
 
 /**
- * Servicio de seguridad
+ * Security service
  * 
  * @author anver
  *
@@ -35,43 +36,27 @@ public class SecurityServiceImpl implements ISecurityService {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private ServicioAlgoritmo servicioAlgoritmo;
+	private AlgorithmUtil algorithmUtil;
 
 	@Autowired
 	private RefreshTokenRepository refreshTokenRepository;
 
 	@Override
-	public String generateAccountToken(Student alumno) {
-		Algorithm aa = servicioAlgoritmo.getAlgoritmo();
-		log.info("ALGORITH:: {} ", aa);
-		return JWT.create().withIssuer(applicationContext.getId()).withSubject(String.valueOf(alumno.getId()))
-				.withClaim("name", alumno.getName()).withClaim("lastName", alumno.getLastName())
+	public String generateAccountToken(Student student) {
+		log.info(String.format("Generate token for %s", student.getName()));
+		return JWT.create().withIssuer(applicationContext.getId()).withSubject(String.valueOf(student.getId()))
+				.withClaim("name", student.getName()).withClaim("lastName", student.getLastName())
 				.withIssuedAt(new Date(System.currentTimeMillis()))
-				.withExpiresAt(new Date(System.currentTimeMillis() + 3600000)).sign(servicioAlgoritmo.getAlgoritmo());
+				.withExpiresAt(new Date(System.currentTimeMillis() + 3600000)).sign(algorithmUtil.getAlgorithm());
 	}
 
 	@Override
 	@Transactional
-	public String generateAccountRefreshToken(String correo, String contrasenia) {
-		/**
-		 * Optional<Student> opAlumnoABuscar =
-		 * servicioAlumno.obtenerAlumnoPorCorreoYContrasenia(correo, contrasenia);
-		 * 
-		 * if (opAlumnoABuscar.isEmpty()) { return null; }
-		 * 
-		 * Student alumno = opAlumnoABuscar.get();
-		 * 
-		 * // Le generamos su refresh token RefreshToken refreshToken = new
-		 * RefreshToken(); refreshToken.setIssuedAt(System.currentTimeMillis());
-		 * refreshToken.setExpireAt(System.currentTimeMillis() + 600000); refreshToken =
-		 * refreshTokenRepository.save(refreshToken);
-		 * 
-		 * alumno.getRefreshTokens().add(refreshToken);
-		 * servicioAlumno.guardarAlumno(alumno);
-		 * 
-		 * return refreshToken.getId().toString();
-		 **/
-		return null;
+	public RefreshToken generateAccountRefreshToken(Student alumno) {
+		return refreshTokenRepository.save(RefreshToken.builder()
+				.issuedAt(System.currentTimeMillis())
+				.expireAt(System.currentTimeMillis() + 600000)
+				.build());
 	}
 
 	@Override
@@ -123,10 +108,10 @@ public class SecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public Long getUuidDeJwt(String headerAutorizacion) {
+	public Long getUuidFromJwt(String headerAutorizacion) {
 
 		// Creamos un verificador de JWT con el algoritmo que usamos para crearlos
-		JWTVerifier verifier = JWT.require(servicioAlgoritmo.getAlgoritmo()).build();
+		JWTVerifier verifier = JWT.require(algorithmUtil.getAlgorithm()).build();
 
 		// Si no se arrojó una excepción el objeto será diferente de nulo y podremos
 		// obtener
@@ -137,12 +122,15 @@ public class SecurityServiceImpl implements ISecurityService {
 	@Override
 	public void jwtValidation(String headerAutorizacion) {
 		String token = headerAutorizacion.replace("Bearer ", "");
-		JWTVerifier verifier = JWT.require(servicioAlgoritmo.getAlgoritmo()).build();
-		
+		JWTVerifier verifier = JWT.require(algorithmUtil.getAlgorithm()).build();
+
 		try {
-			if(verifier.verify(token) == null) throw new NotAuthorizedException("Invalid token");
+			if (verifier.verify(token) == null)
+				throw new UnauthorizedException("Invalid token");
 		} catch (JWTDecodeException e) {
-			throw new NotAuthorizedException("Token invalid", e);
+			throw new UnauthorizedException("Token invalid", e);
+		} catch (TokenExpiredException e) {
+			throw new UnauthorizedException("Token expired", e);
 		}
 	}
 }

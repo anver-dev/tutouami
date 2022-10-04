@@ -35,7 +35,7 @@ import mx.tutouami.service.impl.StudentServiceImpl;
  *
  */
 @RestController
-@RequestMapping("/v1/account")
+@RequestMapping("/account")
 @Api(value = "Account")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST })
 public class AccountController {
@@ -110,7 +110,7 @@ public class AccountController {
 
 			servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
 
-				Long idAlumno = servicioSeguridad.getUuidDeJwt(authorization.replace("Bearer ", ""));
+				Long idAlumno = servicioSeguridad.getUuidFromJwt(authorization.replace("Bearer ", ""));
 
 				return ResponseEntity.status(HttpStatus.OK).body(servicioAlumno.findById(idAlumno));
 

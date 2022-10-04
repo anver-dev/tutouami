@@ -22,7 +22,6 @@ public class ErrorHandler {
 	@ExceptionHandler(value = HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception,
 			HttpServletRequest request) {
-		System.out.println(exception);
 		log.error(String.format("ERROR: %s", exception.getMessage()));
 		return new ResponseEntity<>(
 				errorUtil.generateBadRequest(String.format("Verifica tu petición. Payload erroneo")),
@@ -47,8 +46,8 @@ public class ErrorHandler {
 		return new ResponseEntity<>(errorUtil.generate(exception), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@ExceptionHandler(value = NotAuthorizedException.class)
-	public ResponseEntity<Object> handleNotAuthorizedException(NotAuthorizedException exception) {
+	@ExceptionHandler(value = UnauthorizedException.class)
+	public ResponseEntity<Object> handleNotAuthorizedException(UnauthorizedException exception) {
 		log.error(String.format(exception.getDebugMessage()));
 		return new ResponseEntity<>(errorUtil.generate(exception), HttpStatus.UNAUTHORIZED);
 	}

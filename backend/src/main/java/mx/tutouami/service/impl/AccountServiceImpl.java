@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.entity.Account;
+import mx.tutouami.entity.RefreshToken;
 import mx.tutouami.entity.Student;
-import mx.tutouami.exceptions.NotAuthorizedException;
+import mx.tutouami.exceptions.UnauthorizedException;
 import mx.tutouami.model.dto.AccountDTO;
 import mx.tutouami.model.dto.TokenDTO;
 import mx.tutouami.model.enums.SecurityTypes;
@@ -32,18 +33,18 @@ public class AccountServiceImpl implements IAccountService {
 		log.info(String.format("Try access with email:: %s", email));
 
 		Account account = accountRepository.findByEmailAndPassword(email, password).orElseThrow(
-				() -> new NotAuthorizedException(String.format("Occount with email: %s not found", email)));
-		log.info("ACCOUNT:: {}", account);
+				() -> new UnauthorizedException(String.format("Account with email: %s not found", email)));
+		
 		Student student = studentRepository.findByAccount(account).orElseThrow(
-				() -> new NotAuthorizedException(String.format("Occount with email: %s not found", email)));
+				() -> new UnauthorizedException(String.format("Account with email: %s not found", email)));
 
 		String jsonWebToken = securityService.generateAccountToken(student);
-		String refreshJsonWebToken = securityService.generateAccountRefreshToken(email, password);
-
+		RefreshToken refreshJsonWebToken = securityService.generateAccountRefreshToken(student);
+		
 		if (jsonWebToken == null)
-			throw new NotAuthorizedException(String.format("Occount with email: %s not found", email));
+			throw new UnauthorizedException(String.format("Account with email: %s not found", email));
 
 		return AccountDTO.generate(account, TokenDTO.builder().type(SecurityTypes.TOKEN.getValue()).value(jsonWebToken)
-				.refreshToken(refreshJsonWebToken).build());
+				.refreshToken(refreshJsonWebToken.getId().toString()).build());
 	}
 }

@@ -13,7 +13,7 @@ import mx.tutouami.entity.Comment;
 import mx.tutouami.entity.Student;
 import mx.tutouami.model.dto.CommentDTO;
 import mx.tutouami.repository.StudentRepository;
-import mx.tutouami.repository.AsesoriaRepository;
+import mx.tutouami.repository.AdviceRepository;
 import mx.tutouami.repository.ComentarioRepository;
 
 @Service
@@ -21,7 +21,7 @@ import mx.tutouami.repository.ComentarioRepository;
 public class ServicioComentario {
 	
 	@Autowired 
-	private AsesoriaRepository asesoriaRepository;
+	private AdviceRepository asesoriaRepository;
 	
 	@Autowired 
 	private StudentRepository alumnoRepository;

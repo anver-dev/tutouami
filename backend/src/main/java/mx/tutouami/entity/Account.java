@@ -14,9 +14,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Entidad de negocio Usuario
+ * Account entity
  * 
- * @author humbertocervantes
+ * @author anver
  *
  */
 @Entity

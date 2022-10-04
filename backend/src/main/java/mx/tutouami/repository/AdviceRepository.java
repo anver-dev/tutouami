@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import mx.tutouami.entity.Advice;
 
-public interface AsesoriaRepository extends CrudRepository<Advice, Long> {
+public interface AdviceRepository extends CrudRepository<Advice, Long> {
 	
 
 }

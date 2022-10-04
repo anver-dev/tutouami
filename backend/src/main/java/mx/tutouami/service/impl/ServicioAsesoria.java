@@ -15,7 +15,7 @@ import mx.tutouami.entity.Student;
 import mx.tutouami.entity.Subject;
 import mx.tutouami.model.dto.AdviceDTO;
 import mx.tutouami.repository.StudentRepository;
-import mx.tutouami.repository.AsesoriaRepository;
+import mx.tutouami.repository.AdviceRepository;
 import mx.tutouami.repository.MateriaRepository;
 
 
@@ -24,7 +24,7 @@ import mx.tutouami.repository.MateriaRepository;
 public class ServicioAsesoria {
 	
 	@Autowired 
-	private AsesoriaRepository asesoriaRepository;
+	private AdviceRepository asesoriaRepository;
 	
 	@Autowired 
 	private StudentRepository alumnoRepository;

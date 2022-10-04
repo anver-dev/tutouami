@@ -35,7 +35,7 @@ import mx.tutouami.service.IStudentService;
  *
  */
 @RestController
-@RequestMapping("/v1/students")
+@RequestMapping("/students")
 @Api(value = "Student")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH,
 		RequestMethod.DELETE })

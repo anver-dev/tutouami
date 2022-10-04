@@ -13,6 +13,8 @@ spring:
       
 server:
   port: 8080
+  servlet:
+    context-path: /api/v1
   
 security:
   secret: 4E635266556A586E327234753778214125442A472D4B6150645367566B597033
