@@ -28,12 +28,12 @@ import mx.tutouami.model.dto.StudentDTO;
 import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.InscriptionDTO;
 import mx.tutouami.service.impl.SecurityServiceImpl;
-import mx.tutouami.service.impl.ServicioInscripcion;
+import mx.tutouami.service.impl.InscriptionServiceImpl;
 
 @RestController
 @RequestMapping("/v1") 
 @Slf4j
-public class InscripcionRestController {
+public class InscriptionController {
 
 	
 	

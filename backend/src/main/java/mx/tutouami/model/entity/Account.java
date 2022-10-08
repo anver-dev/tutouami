@@ -1,4 +1,4 @@
-package mx.tutouami.entity;
+package mx.tutouami.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

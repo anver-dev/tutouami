@@ -6,15 +6,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.tutouami.entity.Subject;
 import mx.tutouami.model.dto.SubjectDTO;
-import mx.tutouami.repository.MateriaRepository;
+import mx.tutouami.model.entity.Subject;
+import mx.tutouami.repository.SubjectRepository;
 
 @Service
-public class ServicioMateria {
+public class SubjectServiceImpl {
 	
 	@Autowired 
-	private MateriaRepository materiaRepository;
+	private SubjectRepository materiaRepository;
 
 	public List<SubjectDTO> recuperaMaterias() {
 		List<SubjectDTO> materiasDto = new ArrayList<>();

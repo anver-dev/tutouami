@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mx.tutouami.entity.Account;
+import mx.tutouami.model.entity.Account;
 
 /**
  * DTO de usuarios

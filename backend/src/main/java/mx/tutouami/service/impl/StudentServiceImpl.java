@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.tutouami.entity.Student;
 import mx.tutouami.exceptions.EnrolmentAlreadyExistsException;
 import mx.tutouami.exceptions.NotFoundException;
 import mx.tutouami.model.dto.StatusDTO;
 import mx.tutouami.model.dto.StudentDTO;
+import mx.tutouami.model.entity.Student;
 import mx.tutouami.model.enums.StudentStatusTypes;
 import mx.tutouami.repository.StudentRepository;
 import mx.tutouami.service.IStudentService;

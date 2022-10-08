@@ -2,7 +2,7 @@ package mx.tutouami.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import mx.tutouami.entity.Group;
+import mx.tutouami.model.entity.Group;
 
 /**
  * Repositorio para Grupos
@@ -10,7 +10,7 @@ import mx.tutouami.entity.Group;
  * @author humbertocervantes
  *
  */
-public interface GrupoRepository extends CrudRepository <Group, Long> {
+public interface GroupRepository extends CrudRepository <Group, Long> {
 	
 	/**
 	 * Encuentra un grupo a partir de un nombre

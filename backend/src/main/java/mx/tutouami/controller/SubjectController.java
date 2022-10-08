@@ -25,8 +25,8 @@ import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.AdviceDTO;
 import mx.tutouami.model.dto.SubjectDTO;
 import mx.tutouami.service.impl.SecurityServiceImpl;
-import mx.tutouami.service.impl.ServicioAsesoria;
-import mx.tutouami.service.impl.ServicioMateria;
+import mx.tutouami.service.impl.AdviceServiceImpl;
+import mx.tutouami.service.impl.SubjectServiceImpl;
 
 /**
  * Restcontroller para entidad materia
@@ -39,16 +39,16 @@ import mx.tutouami.service.impl.ServicioMateria;
 @RequestMapping("/v1")
 @Api(value = "Materia")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET})
-public class MateriaRestController {
+public class SubjectController {
 	
 	@Autowired
-    private ServicioMateria servicioMateria;
+    private SubjectServiceImpl servicioMateria;
 	
 	@Autowired
 	private SecurityServiceImpl servicioSeguridad;
 	
 	@Autowired
-	private ServicioAsesoria servicioAsesoria;
+	private AdviceServiceImpl servicioAsesoria;
 	
 	
 	/**
@@ -94,7 +94,7 @@ public class MateriaRestController {
 			@PathVariable("idMateria") Long idMateria) {
 		log.info("Se van a obtener las asesorias de la materia con id " + idMateria);
 		servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
-			List<AdviceDTO> asesoriasDto = servicioAsesoria.recuperaAsesoriasMateria(idMateria);
+			List<AdviceDTO> asesoriasDto = servicioAsesoria.findBySubject(idMateria);
 			return ResponseEntity.status(HttpStatus.OK).body(asesoriasDto);
 		
 		

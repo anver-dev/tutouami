@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import mx.tutouami.entity.Group;
-import mx.tutouami.entity.Account;
-import mx.tutouami.repository.GrupoRepository;
+import mx.tutouami.repository.GroupRepository;
+import mx.tutouami.model.entity.Account;
+import mx.tutouami.model.entity.Group;
 import mx.tutouami.repository.AccountRepository;
 
 /**
@@ -29,7 +29,7 @@ public class ControlAgregarUsuarioTest {
 	// Los siguientes son únicamente para poder acceder a la BD
 	
 	@Autowired
-	private GrupoRepository grupoRepository;
+	private GroupRepository grupoRepository;
 
 	@Autowired
 	private AccountRepository usuarioRepository;

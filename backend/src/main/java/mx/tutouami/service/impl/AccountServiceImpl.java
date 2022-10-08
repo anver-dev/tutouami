@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.tutouami.entity.Account;
-import mx.tutouami.entity.RefreshToken;
-import mx.tutouami.entity.Student;
 import mx.tutouami.exceptions.UnauthorizedException;
 import mx.tutouami.model.dto.AccountDTO;
 import mx.tutouami.model.dto.TokenDTO;
+import mx.tutouami.model.entity.Account;
+import mx.tutouami.model.entity.RefreshToken;
+import mx.tutouami.model.entity.Student;
 import mx.tutouami.model.enums.SecurityTypes;
 import mx.tutouami.repository.AccountRepository;
 import mx.tutouami.repository.StudentRepository;

@@ -1,7 +1,6 @@
 package mx.tutouami.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,101 +12,88 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
 import mx.tutouami.model.SecurityExamples;
 import mx.tutouami.model.dto.AdviceDTO;
-import mx.tutouami.service.impl.SecurityServiceImpl;
-import mx.tutouami.service.impl.ServicioAsesoria;
+import mx.tutouami.model.dto.CommentDTO;
+import mx.tutouami.service.IAdviceService;
+import mx.tutouami.service.ISecurityService;
 
 /**
- * Restcontroller para entidad asesoria
+ * Advice controller
+ * 
  * @author anver
  *
  */
-@Slf4j
 @RestController
-@RequestMapping("/v1") 
-@Api(value = "Asesoria")
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH, RequestMethod.DELETE })
+@RequestMapping("/advices")
+@Api(value = "Advice")
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PATCH,
+		RequestMethod.DELETE })
 public class AdviceController {
 
 	@Autowired
-	private ServicioAsesoria servicioAsesoria;
+	private IAdviceService adviceService;
 
 	@Autowired
-	private SecurityServiceImpl servicioSeguridad;
+	private ISecurityService securityService;
 
-	/**
-	 * Permite recuperar todos las asesorias
-	 * 
-	 * @return
-	 */
-	@ApiOperation(value = "Obtiene asesorias", notes = "Se obtienen todas las asesorias")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Asesoria obtenidas exitosamente"),
-			@ApiResponse(code = 401, message = "No tienes los permisos necesarios") })
-	@GetMapping(path = "/asesorias", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<AdviceDTO>> retrieveAll(
+	@ApiOperation(value = "Get advices", notes = "Get all advices")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Get all advices successful"),
+			@ApiResponse(code = 401, message = "Not authorized") })
+	@GetMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<AdviceDTO>> getAll(
 			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization) {
-
-		servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
-			log.info("Se consulta endpoint /asesorias");
-			List<AdviceDTO> asesorias = servicioAsesoria.recuperaAsesorias();
-
-			return ResponseEntity.status(HttpStatus.OK).body(asesorias);
+		securityService.jwtValidation(authorization);
+		return ResponseEntity.status(HttpStatus.OK).body(adviceService.findAll());
 	}
 
-	/**
-	 * Actualiza la puntuacion de una asesoria
-	 * 
-	 * @param idAsesoria id de la asesoria
-	 * @param puntuacion puntuacion que se agregara
-	 * @return
-	 */
-	@ApiOperation(value = "Actualiza la puntuacion de una asesoria", notes = "Se actualiza la puntuacion de una asesoria a través de su id")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Asesoria actualizada exitosamente"),
-			@ApiResponse(code = 401, message = "No tienes los permisos necesarios"),
-			@ApiResponse(code = 404, message = "No se encontro la asesoria"),
-			@ApiResponse(code = 500, message = "Error en el servidor") })
-	@PatchMapping(path = "/asesoria/{idAsesoria}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Update advice score", notes = "Update score of advice")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Score update successful"),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 404, message = "Advice not found"),
+			@ApiResponse(code = 500, message = "Server error") })
+	@PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> update(
 			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
-			@PathVariable("idAsesoria") Long idAsesoria, @RequestBody @Valid Integer puntuacion) {
-
-		// Traza
-		log.info("Actualizando puntuacion la asesoria con id " + idAsesoria);
-
-		try {
-			servicioSeguridad.jwtValidation(authorization.replace("Bearer ", ""));
-				Optional<AdviceDTO> optionalAsesoria = servicioAsesoria.actualizarPuntuacion(idAsesoria, puntuacion);
-
-				if (!optionalAsesoria.isPresent())
-					ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro la asesoria");
-
-				return ResponseEntity.status(HttpStatus.CREATED).body(optionalAsesoria);
-		} catch (Exception ex) {
-
-			HttpStatus status;
-
-			if (ex instanceof IllegalArgumentException) {
-				status = HttpStatus.BAD_REQUEST;
-			} else {
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-			}
-
-			throw new ResponseStatusException(status, ex.getMessage());
-		}
+			@PathVariable("id") Long id, @RequestBody @Valid Float puntuacion) {
+		securityService.jwtValidation(authorization);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(adviceService.updateScore(id, puntuacion));
 	}
 
+	@ApiOperation(value = "Create new comment for advice id", notes = "Create new comment")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Comment created successful"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 404, message = "Student or advice not found"),
+			@ApiResponse(code = 500, message = "Internal error") })
+	@PostMapping(path = "/{id}/comments", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> createComment(
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@RequestBody @Valid CommentDTO comment, @PathVariable("id") Long id) {
+		securityService.jwtValidation(authorization);
+		return ResponseEntity.status(HttpStatus.CREATED).body(adviceService.createComment(id, comment));
+	}
+
+	@ApiOperation(value = "Update comment", notes = "Update comment of advice")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Comment updated successful"),
+			@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 404, message = "Advice not found"),
+			@ApiResponse(code = 500, message = "Server error") })
+	@PutMapping(path = "/{id}/comments", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<CommentDTO> updateComment(
+			@ApiParam(name = "Authorization", value = "Bearer token", example = SecurityExamples.HEADER_AUTHORIZATION, required = true) @RequestHeader(value = "Authorization", name = "Authorization", required = true) String authorization,
+			@PathVariable("id") @Valid Long id, @RequestBody @Valid CommentDTO comment) {
+		securityService.jwtValidation(authorization);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(adviceService.updateComment(id, comment));
+	}
 }

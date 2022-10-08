@@ -5,9 +5,9 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
-import mx.tutouami.entity.Advice;
-import mx.tutouami.entity.Inscription;
-import mx.tutouami.entity.Student;
+import mx.tutouami.model.entity.Advice;
+import mx.tutouami.model.entity.Inscription;
+import mx.tutouami.model.entity.Student;
 
 /**
  * DTO de inscripciones

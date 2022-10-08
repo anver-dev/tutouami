@@ -1,4 +1,4 @@
-package mx.tutouami.entity;
+package mx.tutouami.model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class Subject {
 	 * @return true si la asesoria se agregó correctamente, false si no
 	 * @throws IllegalArgumentException si la asesoria es nula
 	 */
-	public boolean addAsesoria(Advice asesoria) {
+	public boolean addAdvice(Advice asesoria) {
 
 		if(asesoria == null) {
 			throw new IllegalArgumentException("El usuario no puede ser null");

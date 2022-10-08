@@ -9,15 +9,16 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mx.tutouami.entity.Advice;
-import mx.tutouami.entity.Comment;
-import mx.tutouami.entity.Degree;
-import mx.tutouami.entity.Student;
+import mx.tutouami.model.entity.Advice;
+import mx.tutouami.model.entity.Comment;
+import mx.tutouami.model.entity.Degree;
+import mx.tutouami.model.entity.Student;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +26,7 @@ import mx.tutouami.entity.Student;
 @Data
 public class StudentDTO {
 
+	@JsonProperty(value = "studentId")
 	private Long id;
 	
 	@NotEmpty

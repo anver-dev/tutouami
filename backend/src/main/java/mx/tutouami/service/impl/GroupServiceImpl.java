@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.tutouami.entity.Group;
-import mx.tutouami.repository.GrupoRepository;
+import mx.tutouami.model.entity.Group;
+import mx.tutouami.repository.GroupRepository;
 
 @Service
-public class ServicioGrupo {
+public class GroupServiceImpl {
 	
 	@Autowired 
-	GrupoRepository grupoRepository;
+	GroupRepository grupoRepository;
 	
 	
 	/**

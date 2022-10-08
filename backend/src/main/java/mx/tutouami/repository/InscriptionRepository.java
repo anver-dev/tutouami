@@ -3,13 +3,13 @@ package mx.tutouami.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import mx.tutouami.entity.Inscription;
-import mx.tutouami.entity.Student;
 import mx.tutouami.model.dto.AdviceDTO;
+import mx.tutouami.model.entity.Inscription;
+import mx.tutouami.model.entity.Student;
 
-public interface InscripcionRepository extends CrudRepository<Inscription, Long> {
+public interface InscriptionRepository extends JpaRepository<Inscription, Long> {
 
 	public Optional<Inscription> findByAsesoriaAndAlumno(AdviceDTO asesoria, Student alumno);
 

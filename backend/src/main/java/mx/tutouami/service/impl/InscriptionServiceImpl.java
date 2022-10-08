@@ -12,23 +12,23 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.tutouami.entity.Advice;
-import mx.tutouami.entity.Inscription;
-import mx.tutouami.entity.Student;
 import mx.tutouami.model.dto.InscriptionDTO;
-import mx.tutouami.repository.InscripcionRepository;
+import mx.tutouami.model.entity.Advice;
+import mx.tutouami.model.entity.Inscription;
+import mx.tutouami.model.entity.Student;
+import mx.tutouami.repository.InscriptionRepository;
 
 @Service
-public class ServicioInscripcion {
+public class InscriptionServiceImpl {
 	@SuppressWarnings("unused")
 	@Autowired
-	private ServicioAsesoria servicioAsesoria;
+	private AdviceServiceImpl servicioAsesoria;
 	
 	@Autowired
 	private StudentServiceImpl servicioAlumno;
 	
 	@Autowired
-	private InscripcionRepository inscripcionRepository;
+	private InscriptionRepository inscripcionRepository;
 	
 	public Optional<InscriptionDTO> actualizarEstado(Long idInscripcion, Long idAlumno, @Valid String estado) {
 		Optional<Inscription> opInscripcion = inscripcionRepository.findById(idInscripcion);
@@ -77,12 +77,9 @@ public class ServicioInscripcion {
 	public InscriptionDTO agregaInscripcion(Long idAsesoria, Long idAlumno) {
 		//Optional<Student> opAlumno = servicioAlumno.obtenerAlumnoPorId(idAlumno);
 		Optional<Student> opAlumno = java.util.Optional.empty();
-		Optional<Advice> optionalAsesoria = servicioAsesoria.obtenerAsesoriaPorId(idAsesoria);
+		//Optional<Advice> optionalAsesoria = servicioAsesoria.findById(idAsesoria);
 		
-		if(!opAlumno.isPresent() || !optionalAsesoria.isPresent())
-			return null;
-		
-		Advice asesoria = optionalAsesoria.get();
+		Advice asesoria = new Advice();
 		Student alumno = opAlumno.get();
 		Inscription inscripcion = new Inscription();
 		
@@ -96,8 +93,8 @@ public class ServicioInscripcion {
 		alumno.addInscription(inscripcion);
 		//servicioAlumno.guardarAlumno(alumno);
 		
-		asesoria.setInscripcion(inscripcion);
-		servicioAsesoria.guardarAsesoria(asesoria);
+		asesoria.setInscription(inscripcion);
+		//servicioAsesoria.create(asesoria);
 		
 		return InscriptionDTO.creaInscripcionDto(inscripcion);
 	}

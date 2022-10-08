@@ -1,4 +1,4 @@
-package mx.tutouami.entity;
+package mx.tutouami.model.entity;
 
 import java.util.UUID;
 

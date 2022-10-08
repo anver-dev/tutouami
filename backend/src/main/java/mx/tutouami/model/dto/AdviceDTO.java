@@ -1,87 +1,79 @@
 package mx.tutouami.model.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import lombok.Builder;
 import lombok.Data;
-import mx.tutouami.entity.Advice;
+import mx.tutouami.model.entity.Advice;
 
 /**
  * DTO de asesorias
  * 
  */
 @Data
+@Builder
 public class AdviceDTO {
 	
-	private long idAsesoria;
+	private long id;
 	
 	@NotEmpty(message = "El campo no debe ser vacio")
-	private String dia;
+	private Date date;
 	
 	@NotEmpty(message = "El campo no debe ser vacio")
-	private String tipo;
+	private Date startTime;
 	
 	@NotEmpty(message = "El campo no debe ser vacio")
-	private String detalles;
-
-	@NotEmpty(message = "El campo no debe ser vacio")
-	private String horaInicio;
-	
-	@NotEmpty(message = "El campo no debe ser vacio")
-	private String horaTermino;
+	private Date endTime;
 	
 	@NotNull
-	private float costo;
+	private Float price;
+	
+	@NotNull
+	private Float score;
 
 	@NotEmpty
 	private String url;
 	
 	@NotEmpty(message = "El campo no debe ser vacio")
-	private String ubicacion;
+	private Integer totalScore;
 	
 	@NotEmpty
-	private String estado;
+	private String details;
 	
-	@NotNull
-	private float puntuacion;
+	@NotEmpty
+	private String type;
 	
-	@NotNull
-	private int totalPuntuaciones;
+	@NotEmpty
+	private String location;
+	
+	@NotEmpty
+	private String status;
 		
 	@NotNull
-	private long materia;
+	private Long subjectId;
 	
 	@NotNull
-	private long alumno;
+	private Long studentId;
 
-
-	/**
-	 * Este método permite generar un DTO a partir de la entidad
-	 * nota: es un método de clase y no se necesita un objeto
-	 * para invocarlo. Se invoca como UsuarioDto.crea(param)
-     * @param usuario la entidad
-	 * @return dto obtenido a partir de la entidad
-	 */
-	
-	public static AdviceDTO creaAsesoriaDto(Advice asesoria) {
-		AdviceDTO dto = new AdviceDTO();
-		
-		dto.setIdAsesoria(asesoria.getIdAsesoria());
-		dto.setDia(asesoria.getDia());
-		dto.setTipo(asesoria.getTipo());
-		dto.setDetalles(asesoria.getDetalles());
-		dto.setHoraInicio(asesoria.getHoraInicio());
-		dto.setHoraTermino(asesoria.getHoraTermino());
-		dto.setCosto(asesoria.getCosto());
-		dto.setUbicacion(asesoria.getUbicacion());
-		dto.setPuntuacion(asesoria.getPuntuacion());
-		dto.setTotalPuntuaciones(asesoria.getTotalPuntuaciones());
-		dto.setUrl(asesoria.getUrl());
-		dto.setEstado(asesoria.getEstado());
-		dto.setMateria(asesoria.getMateria().getIdMateria());
-		dto.setAlumno(asesoria.getIdAlumno());
-		
-		return dto;
+	public static AdviceDTO generate(Advice advice) {
+		return AdviceDTO.builder()
+				.date(advice.getDate())
+				.details(advice.getDetails())
+				.endTime(advice.getEndTime())
+				.id(advice.getId())
+				.location(advice.getLocation())
+				.price(advice.getPrice())
+				.score(advice.getScore())
+				.startTime(advice.getStartTime())
+				.status(advice.getStatus())
+				.studentId(advice.getStudent().getId())
+				.subjectId(advice.getSubject().getIdMateria())
+				.totalScore(advice.getTotalScore())
+				.type(advice.getType())
+				.url(advice.getUrl())
+				.build();
 	}
-
 }

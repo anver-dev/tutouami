@@ -8,6 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/v1") // Versionamiento
 @Slf4j 
-public class CarreraRestController {
+public class DegreeController {
 	
 }

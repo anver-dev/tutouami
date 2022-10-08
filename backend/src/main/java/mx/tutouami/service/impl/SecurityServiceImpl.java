@@ -15,9 +15,9 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.tutouami.entity.RefreshToken;
-import mx.tutouami.entity.Student;
 import mx.tutouami.exceptions.UnauthorizedException;
+import mx.tutouami.model.entity.RefreshToken;
+import mx.tutouami.model.entity.Student;
 import mx.tutouami.repository.RefreshTokenRepository;
 import mx.tutouami.security.AlgorithmUtil;
 import mx.tutouami.service.ISecurityService;
@@ -109,13 +109,7 @@ public class SecurityServiceImpl implements ISecurityService {
 
 	@Override
 	public Long getUuidFromJwt(String headerAutorizacion) {
-
-		// Creamos un verificador de JWT con el algoritmo que usamos para crearlos
 		JWTVerifier verifier = JWT.require(algorithmUtil.getAlgorithm()).build();
-
-		// Si no se arrojó una excepción el objeto será diferente de nulo y podremos
-		// obtener
-		// el claim subject que tiene el UUID del usuario
 		return Long.parseLong(verifier.verify(headerAutorizacion).getSubject());
 	}
 

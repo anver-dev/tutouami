@@ -6,25 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
-import mx.tutouami.entity.Account;
-import mx.tutouami.entity.Degree;
-import mx.tutouami.entity.Student;
-import mx.tutouami.entity.Subject;
+import mx.tutouami.model.entity.Account;
+import mx.tutouami.model.entity.Degree;
+import mx.tutouami.model.entity.Student;
+import mx.tutouami.model.entity.Subject;
 import mx.tutouami.repository.AccountRepository;
 import mx.tutouami.repository.AdviceRepository;
-import mx.tutouami.repository.CarreraRepository;
-import mx.tutouami.repository.GrupoRepository;
-import mx.tutouami.repository.MateriaRepository;
+import mx.tutouami.repository.DegreeRepository;
+import mx.tutouami.repository.GroupRepository;
+import mx.tutouami.repository.SubjectRepository;
 import mx.tutouami.repository.StudentRepository;
 
 @SpringBootApplication
 public class TutouamiApplication {
 	
 	@Autowired
-	GrupoRepository grupoRepository;
+	GroupRepository grupoRepository;
 	
 	@Autowired
-	CarreraRepository carreraRepository;
+	DegreeRepository carreraRepository;
 	
 	@Autowired
 	AdviceRepository asesoriaRepository;
@@ -33,7 +33,7 @@ public class TutouamiApplication {
 	StudentRepository  studentRepository;
 	
 	@Autowired
-	MateriaRepository materiaRepository;
+	SubjectRepository materiaRepository;
 	
 	@Autowired
 	AccountRepository accountRepository;

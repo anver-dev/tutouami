@@ -1,52 +1,47 @@
 package mx.tutouami.model.dto;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import mx.tutouami.entity.Comment;
+import lombok.NoArgsConstructor;
+import mx.tutouami.model.entity.Comment;
 
 /**
- * DTO de comentarios
+ * Comment DTO
  * 
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentDTO {
 	
-	private long idComentario;
+	@NotNull
+	private Long id;
 	
-	@NotEmpty(message = "El campo no debe ser vacio")
-	private String contenido;
+	@NotEmpty(message = "Require content")
+	private String content;
 	
-	@NotEmpty(message = "El campo no debe ser vacio")
-	private String fechaCreacion;
+	private Date createAt;
 	
 	@NotNull
-	private long alumno;
+	private Long studentId;
 	
 	@NotNull
-	private long asesoria;
+	private Long adviceId;
 	
-	
-	/**
-	 * Este método permite generar un DTO a partir de la entidad
-	 * nota: es un método de clase y no se necesita un objeto
-	 * para invocarlo. Se invoca como ComentarioDto.crea(param)
-     * @param usuario la entidad
-	 * @return dto obtenido a partir de la entidad
-	 */
-	
-	public static CommentDTO creaComentarioDto(Comment comentario) {
-		CommentDTO dto = new CommentDTO();
-		
-		dto.setIdComentario(comentario.getIdComentario());
-		dto.setContenido(comentario.getContenido());
-		dto.setFechaCreacion(comentario.getFechaCreacion());
-		dto.setAlumno(comentario.getIdAlumno());
-		dto.setAsesoria(comentario.getIdAsesoria());
-		
-		
-		return dto;
+	public static CommentDTO generate(Comment comment) {
+		return CommentDTO.builder()
+				.adviceId(comment.getAdvice().getId())
+				.studentId(comment.getStudent().getId())
+				.createAt(comment.getCreateAt())
+				.id(comment.getId())
+				.content(comment.getContent())
+				.build();
 	}
-	
 }

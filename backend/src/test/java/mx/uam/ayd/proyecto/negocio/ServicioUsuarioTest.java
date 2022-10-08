@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import org.mockito.stubbing.Answer;
 
-import mx.tutouami.entity.Group;
-import mx.tutouami.entity.Account;
-import mx.tutouami.repository.GrupoRepository;
+import mx.tutouami.repository.GroupRepository;
+import mx.tutouami.model.entity.Account;
+import mx.tutouami.model.entity.Group;
 import mx.tutouami.repository.AccountRepository;
 import mx.tutouami.service.impl.AccountServiceImpl;
 
@@ -40,7 +40,7 @@ class ServicioUsuarioTest {
 	private AccountRepository usuarioRepository;
 	
 	@Mock
-	private GrupoRepository grupoRepository;
+	private GroupRepository grupoRepository;
 	
 	// Esta anotación hace que se inyecten todos los Mocks al módulo que quiero
 	// probar para que no haya nullPointerException por que las dependencias
