@@ -1,5 +1,4 @@
 spring:
-
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -14,3 +13,10 @@ spring:
       
 server:
   port: 8080
+  servlet:
+    context-path: /api/v1
+  
+security:
+  jwt:
+    secret: 4E635266556A586E327234753778214125442A472D4B6150645367566B597033
+    expiration: 86400000

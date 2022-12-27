@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import mx.uam.ayd.proyecto.datos.GrupoRepository;
-import mx.uam.ayd.proyecto.datos.UsuarioRepository;
-import mx.uam.ayd.proyecto.negocio.modelo.Grupo;
-import mx.uam.ayd.proyecto.negocio.modelo.Usuario;
+import anver.tutouami.com.model.entity.Account;
+import anver.tutouami.com.model.entity.Group;
+import anver.tutouami.com.repository.AccountRepository;
+import anver.tutouami.com.repository.GroupRepository;
 
 /**
  * 
@@ -29,10 +29,10 @@ public class ControlAgregarUsuarioTest {
 	// Los siguientes son únicamente para poder acceder a la BD
 	
 	@Autowired
-	private GrupoRepository grupoRepository;
+	private GroupRepository grupoRepository;
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private AccountRepository usuarioRepository;
 
 	
 	/**
@@ -53,7 +53,7 @@ public class ControlAgregarUsuarioTest {
 	public void setUp() {
 			
 		// Creamos un grupo y lo agregamos a la BD
-	    Grupo administradores = new Grupo();
+	    Group administradores = new Group();
 	    administradores.setNombre("Prueba");
 	    
 	    grupoRepository.save(administradores);
@@ -79,13 +79,6 @@ public class ControlAgregarUsuarioTest {
 		String apellido = "Perez";
 		String grupo = "Prueba";
 		
-		// No ponemos assert aquí por que el control es de tipo void
-		//controlAgregarUsuario.agregaUsuario(nombre,apellido,grupo);
-		
-		// Recuperamos el usuario de la BD
-		Usuario usuario = usuarioRepository.findByNombreAndApellido(nombre,apellido);
-
-		assertNotNull(usuario);
 
 	}
 }
