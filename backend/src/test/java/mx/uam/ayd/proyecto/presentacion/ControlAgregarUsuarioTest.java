@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import mx.tutouami.repository.GroupRepository;
-import mx.tutouami.model.entity.Account;
-import mx.tutouami.model.entity.Group;
-import mx.tutouami.repository.AccountRepository;
+import anver.tutouami.com.model.entity.Account;
+import anver.tutouami.com.model.entity.Group;
+import anver.tutouami.com.repository.AccountRepository;
+import anver.tutouami.com.repository.GroupRepository;
 
 /**
  * 

@@ -2,18 +2,9 @@ package mx.uam.ayd.proyecto.negocio;
 
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import org.mockito.stubbing.Answer;
-
-import mx.tutouami.repository.GroupRepository;
-import mx.tutouami.model.entity.Account;
-import mx.tutouami.model.entity.Group;
-import mx.tutouami.repository.AccountRepository;
-import mx.tutouami.service.impl.AccountServiceImpl;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
+
+import anver.tutouami.com.model.entity.Account;
+import anver.tutouami.com.model.entity.Group;
+import anver.tutouami.com.repository.AccountRepository;
+import anver.tutouami.com.repository.GroupRepository;
+import anver.tutouami.com.security.service.impl.AuthServiceImpl;
 
 /**
  * 
@@ -46,7 +44,7 @@ class ServicioUsuarioTest {
 	// probar para que no haya nullPointerException por que las dependencias
 	// no están satisfechas en tiempo de pruebas
 	@InjectMocks
-	private AccountServiceImpl servicio;
+	private AuthServiceImpl servicio;
 
 	
 	@BeforeEach

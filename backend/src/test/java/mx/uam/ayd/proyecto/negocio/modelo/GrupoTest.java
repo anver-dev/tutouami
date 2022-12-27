@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import mx.tutouami.model.entity.Account;
-import mx.tutouami.model.entity.Group;
+import anver.tutouami.com.model.entity.Account;
+import anver.tutouami.com.model.entity.Group;
 
 /**
  * 
